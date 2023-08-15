@@ -35,9 +35,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trackitofficial.R
-import com.example.trackitofficial.WorkoutTopAppBar
+import com.example.trackitofficial.TrackItTopAppBar
 import com.example.trackitofficial.data.db.Workout
 import com.example.trackitofficial.ui.AppViewModelProvider
+import com.example.trackitofficial.ui.navigation.NavigationDestination
 import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
 
 object HomeDestination : NavigationDestination {
@@ -63,7 +64,7 @@ fun HomeScreen(
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            WorkoutTopAppBar(
+            TrackItTopAppBar(
                 title = stringResource(HomeDestination.titleRes),
                 canNavigateBack = false,
                 scrollBehavior = scrollBehavior

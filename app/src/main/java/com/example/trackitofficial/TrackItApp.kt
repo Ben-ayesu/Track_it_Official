@@ -30,7 +30,7 @@ fun TrackitApp(navController: NavHostController = rememberNavController()) {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WorkoutTopAppBar(
+fun TrackItTopAppBar(
     title: String,
     canNavigateBack: Boolean,
     modifier: Modifier = Modifier,

@@ -7,6 +7,9 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.trackitofficial.TrackItApplication
 import com.example.trackitofficial.ui.home.HomeViewModel
+import com.example.trackitofficial.ui.workout.TrackItDetailsViewModel
+import com.example.trackitofficial.ui.workout.TrackItEditViewModel
+import com.example.trackitofficial.ui.workout.WorkoutEntryViewModel
 
 /**
  * Provides Factory to create instance of ViewModel for the entire Inventory app
@@ -15,21 +18,19 @@ object AppViewModelProvider {
     val Factory = viewModelFactory {
         // Initializer for ItemEditViewModel
         initializer {
-            WorkoutEditViewModel(
+            TrackItEditViewModel(
                 this.createSavedStateHandle(),
-                trackItApplication().container.workouts
             )
         }
         // Initializer for ItemEntryViewModel
         initializer {
-            TrackItApplication(trackItApplication().container.workouts)
+            WorkoutEntryViewModel()
         }
 
         // Initializer for ItemDetailsViewModel
         initializer {
-            WorkoutDetailsViewModel(
+            TrackItDetailsViewModel(
                 this.createSavedStateHandle(),
-                trackItApplication().container.workouts
             )
         }
 
