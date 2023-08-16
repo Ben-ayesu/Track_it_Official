@@ -1,5 +1,6 @@
 package com.example.trackitofficial.ui.navigation
 
+import TrackItEditScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -9,6 +10,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.trackitofficial.ui.home.HomeDestination
 import com.example.trackitofficial.ui.home.HomeScreen
+import com.example.trackitofficial.ui.workout.ItemEntryScreen
+import com.example.trackitofficial.ui.workout.WorkoutDetailsDestination
+import com.example.trackitofficial.ui.workout.WorkoutDetailsScreen
+import com.example.trackitofficial.ui.workout.WorkoutEntryDestination
 
 /**
  * Provides Navigation graph for the application.
@@ -25,25 +30,25 @@ fun TrackItNavHost(
     ) {
         composable(route = HomeDestination.route) {
             HomeScreen(
-                navigateToItemEntry = { navController.navigate(ItemEntryDestination.route) },
+                navigateToItemEntry = { navController.navigate(WorkoutEntryDestination.route) },
                 navigateToItemUpdate = {
-                    navController.navigate("${ItemDetailsDestination.route}/${it}")
+                    navController.navigate("${WorkoutDetailsDestination.route}/${it}")
                 }
             )
         }
-        composable(route = ItemEntryDestination.route) {
+        composable(route = WorkoutEntryDestination.route) {
             ItemEntryScreen(
                 navigateBack = { navController.popBackStack() },
                 onNavigateUp = { navController.navigateUp() }
             )
         }
         composable(
-            route = ItemDetailsDestination.routeWithArgs,
-            arguments = listOf(navArgument(ItemDetailsDestination.itemIdArg) {
+            route = WorkoutDetailsDestination.routeWithArgs,
+            arguments = listOf(navArgument(WorkoutDetailsDestination.itemIdArg) {
                 type = NavType.IntType
             })
         ) {
-            ItemDetailsScreen(
+            WorkoutDetailsScreen(
                 navigateToEditItem = { navController.navigate("${ItemEditDestination.route}/$it") },
                 navigateBack = { navController.navigateUp() }
             )
@@ -54,7 +59,7 @@ fun TrackItNavHost(
                 type = NavType.IntType
             })
         ) {
-            ItemEditScreen(
+            TrackItEditScreen(
                 navigateBack = { navController.popBackStack() },
                 onNavigateUp = { navController.navigateUp() }
             )
