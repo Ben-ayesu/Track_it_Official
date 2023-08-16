@@ -11,8 +11,8 @@ import com.example.trackitofficial.TrackItTopAppBar
 import com.example.trackitofficial.ui.AppViewModelProvider
 import com.example.trackitofficial.ui.navigation.NavigationDestination
 import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
-import com.example.trackitofficial.ui.workout.ItemEntryBody
 import com.example.trackitofficial.ui.workout.TrackItEditViewModel
+import com.example.trackitofficial.ui.workout.WorkoutEntryBody
 
 object ItemEditDestination : NavigationDestination {
     override val route = "item_edit"
@@ -39,8 +39,8 @@ fun TrackItEditScreen(
         },
         modifier = modifier
     ) { innerPadding ->
-        ItemEntryBody(
-            itemUiState = viewModel.workoutUiState,
+        WorkoutEntryBody(
+            workoutUiState = viewModel.workoutUiState,
             onItemValueChange = { },
             onSaveClick = { },
             modifier = Modifier.padding(innerPadding)

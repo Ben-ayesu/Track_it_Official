@@ -1,25 +1,36 @@
 package com.example.trackitofficial.ui.workout
 
+import android.icu.util.Currency
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trackitofficial.R
+import com.example.trackitofficial.TrackItTopAppBar
 import com.example.trackitofficial.ui.AppViewModelProvider
 import com.example.trackitofficial.ui.navigation.NavigationDestination
+import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
+import java.util.Locale
 
-object ItemEntryDestination : NavigationDestination {
+object WorkoutEntryDestination : NavigationDestination {
     override val route = "item_entry"
-    override val titleRes = R.string.item_entry_title
+    override val titleRes = R.string.workout_entry_title
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,15 +43,15 @@ fun ItemEntryScreen(
 ) {
     Scaffold(
         topBar = {
-            InventoryTopAppBar(
-                title = stringResource(ItemEntryDestination.titleRes),
+            TrackItTopAppBar(
+                title = stringResource(WorkoutEntryDestination.titleRes),
                 canNavigateBack = canNavigateBack,
                 navigateUp = onNavigateUp
             )
         }
     ) { innerPadding ->
-        ItemEntryBody(
-            itemUiState = viewModel.itemUiState,
+        WorkoutEntryBody(
+            workoutUiState = viewModel.itemUiState,
             onItemValueChange = viewModel::updateUiState,
             onSaveClick = { },
             modifier = Modifier
@@ -52,8 +63,8 @@ fun ItemEntryScreen(
 }
 
 @Composable
-fun ItemEntryBody(
-    itemUiState: WorkoutUiState,
+fun WorkoutEntryBody(
+    workoutUiState: WorkoutUiState,
     onItemValueChange: (WorkoutDetails) -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -63,13 +74,13 @@ fun ItemEntryBody(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
     ) {
         ItemInputForm(
-            itemDetails = itemUiState.itemDetails,
+            workoutDetails = workoutUiState.itemDetails,
             onValueChange = onItemValueChange,
             modifier = Modifier.fillMaxWidth()
         )
         Button(
             onClick = onSaveClick,
-            enabled = itemUiState.isEntryValid,
+            enabled = workoutUiState.isEntryValid,
             shape = MaterialTheme.shapes.small,
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -81,7 +92,7 @@ fun ItemEntryBody(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemInputForm(
-    itemDetails: WorkoutDetails,
+    workoutDetails: WorkoutDetails,
     modifier: Modifier = Modifier,
     onValueChange: (WorkoutDetails) -> Unit = {},
     enabled: Boolean = true
@@ -91,9 +102,9 @@ fun ItemInputForm(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
         OutlinedTextField(
-            value = itemDetails.name,
-            onValueChange = { onValueChange(itemDetails.copy(name = it)) },
-            label = { Text(stringResource(R.string.item_name_req)) },
+            value = workoutDetails.name,
+            onValueChange = { onValueChange(workoutDetails.copy(name = it)) },
+            label = { Text(stringResource(R.string.workout_name_req)) },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
@@ -104,10 +115,10 @@ fun ItemInputForm(
             singleLine = true
         )
         OutlinedTextField(
-            value = itemDetails.price,
-            onValueChange = { onValueChange(itemDetails.copy(price = it)) },
+            value = workoutDetails.price,
+            onValueChange = { onValueChange(workoutDetails.copy(price = it)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            label = { Text(stringResource(R.string.item_price_req)) },
+            label = { Text(stringResource(R.string.workout_price_req)) },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
@@ -119,10 +130,10 @@ fun ItemInputForm(
             singleLine = true
         )
         OutlinedTextField(
-            value = itemDetails.quantity,
-            onValueChange = { onValueChange(itemDetails.copy(quantity = it)) },
+            value = workoutDetails.quantity,
+            onValueChange = { onValueChange(workoutDetails.copy(quantity = it)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            label = { Text(stringResource(R.string.quantity_req)) },
+            label = { Text(stringResource(R.string.workout_entry_title)) },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
@@ -144,8 +155,8 @@ fun ItemInputForm(
 @Preview(showBackground = true)
 @Composable
 private fun ItemEntryScreenPreview() {
-    InventoryTheme {
-        ItemEntryBody(itemUiState = WorkoutUiState(
+    TrackItOfficialTheme {
+        WorkoutEntryBody(workoutUiState = WorkoutUiState(
             WorkoutDetails(
                 name = "Item name", price = "10.00", quantity = "5"
             )
