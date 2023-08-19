@@ -37,7 +37,7 @@ object WorkoutEntryDestination : NavigationDestination {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ItemEntryScreen(
+fun WorkoutEntryScreen(
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
     canNavigateBack: Boolean = true,
@@ -57,7 +57,10 @@ fun ItemEntryScreen(
             workoutUiState = viewModel.workoutUiState,
             onItemValueChange = viewModel::updateUiState,
             onSaveClick = {
-                corountineScope.launch { viewModel.saveWorkout() }
+                corountineScope.launch {
+                    viewModel.saveWorkout()
+                    navigateBack()
+                }
             },
             modifier = Modifier
                 .padding(innerPadding)

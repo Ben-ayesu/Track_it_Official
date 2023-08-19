@@ -1,6 +1,7 @@
 package com.example.trackitofficial.ui.navigation
 
 import TrackItEditScreen
+import WorkoutEditDestination
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -10,10 +11,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.trackitofficial.ui.home.HomeDestination
 import com.example.trackitofficial.ui.home.HomeScreen
-import com.example.trackitofficial.ui.workout.ItemEntryScreen
 import com.example.trackitofficial.ui.workout.WorkoutDetailsDestination
 import com.example.trackitofficial.ui.workout.WorkoutDetailsScreen
 import com.example.trackitofficial.ui.workout.WorkoutEntryDestination
+import com.example.trackitofficial.ui.workout.WorkoutEntryScreen
 
 /**
  * Provides Navigation graph for the application.
@@ -37,7 +38,7 @@ fun TrackItNavHost(
             )
         }
         composable(route = WorkoutEntryDestination.route) {
-            ItemEntryScreen(
+            WorkoutEntryScreen(
                 navigateBack = { navController.popBackStack() },
                 onNavigateUp = { navController.navigateUp() }
             )
@@ -49,13 +50,13 @@ fun TrackItNavHost(
             })
         ) {
             WorkoutDetailsScreen(
-                navigateToEditItem = { navController.navigate("${ItemEditDestination.route}/$it") },
+                navigateToEditItem = { navController.navigate("${WorkoutEditDestination.route}/$it") },
                 navigateBack = { navController.navigateUp() }
             )
         }
         composable(
-            route = ItemEditDestination.routeWithArgs,
-            arguments = listOf(navArgument(ItemEditDestination.itemIdArg) {
+            route = WorkoutEditDestination.routeWithArgs,
+            arguments = listOf(navArgument(WorkoutEditDestination.itemIdArg) {
                 type = NavType.IntType
             })
         ) {

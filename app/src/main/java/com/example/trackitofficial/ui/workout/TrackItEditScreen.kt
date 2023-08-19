@@ -14,7 +14,7 @@ import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
 import com.example.trackitofficial.ui.workout.TrackItEditViewModel
 import com.example.trackitofficial.ui.workout.WorkoutEntryBody
 
-object ItemEditDestination : NavigationDestination {
+object WorkoutEditDestination : NavigationDestination {
     override val route = "item_edit"
     override val titleRes = R.string.edit_workout_title
     const val itemIdArg = "itemId"
@@ -32,7 +32,7 @@ fun TrackItEditScreen(
     Scaffold(
         topBar = {
             TrackItTopAppBar(
-                title = stringResource(ItemEditDestination.titleRes),
+                title = stringResource(WorkoutEditDestination.titleRes),
                 canNavigateBack = true,
                 navigateUp = onNavigateUp
             )

@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel
 class TrackItDetailsViewModel(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-
     private val itemId: Int = checkNotNull(savedStateHandle[WorkoutDetailsDestination.itemIdArg])
 
     companion object {

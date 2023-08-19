@@ -137,9 +137,9 @@ fun WorkoutDetails(
                 .padding(dimensionResource(id = R.dimen.padding_medium)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
         ) {
-            ItemDetailsRow(
+            workoutDetailsRow(
                 labelResID = R.string.workout,
-                itemDetail = workout.description,
+                workoutDetail = workout.description,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -147,9 +147,9 @@ fun WorkoutDetails(
                     )
                 )
             )
-            ItemDetailsRow(
+            workoutDetailsRow(
                 labelResID = R.string.workout,
-                itemDetail = workout.description,
+                workoutDetail = workout.description,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -157,9 +157,9 @@ fun WorkoutDetails(
                     )
                 )
             )
-            ItemDetailsRow(
+            workoutDetailsRow(
                 labelResID = R.string.workout,
-                itemDetail = workout.description,
+                workoutDetail = workout.description,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -173,19 +173,21 @@ fun WorkoutDetails(
 }
 
 @Composable
-private fun ItemDetailsRow(
-    @StringRes labelResID: Int, itemDetail: String, modifier: Modifier = Modifier
+private fun workoutDetailsRow(
+    @StringRes labelResID: Int,
+    workoutDetail: String, modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier) {
         Text(text = stringResource(labelResID))
         Spacer(modifier = Modifier.weight(1f))
-        Text(text = itemDetail, fontWeight = FontWeight.Bold)
+        Text(text = workoutDetail, fontWeight = FontWeight.Bold)
     }
 }
 
 @Composable
 private fun DeleteConfirmationDialog(
-    onDeleteConfirm: () -> Unit, onDeleteCancel: () -> Unit, modifier: Modifier = Modifier
+    onDeleteConfirm: () -> Unit,
+    onDeleteCancel: () -> Unit, modifier: Modifier = Modifier
 ) {
     AlertDialog(onDismissRequest = { /* Do nothing */ },
         title = { Text(stringResource(R.string.attention)) },
@@ -207,9 +209,11 @@ private fun DeleteConfirmationDialog(
 @Composable
 fun ItemDetailsScreenPreview() {
     TrackItOfficialTheme {
-//        WorkoutDetailsBody(
-//            WorkoutDetailsScreen(itemDetails = ItemDetails(1, "Pen", "$100", "10")
-//        ), onSellItem = {}, onDelete = {})
-//    }
+        WorkoutDetailsBody(
+            WorkoutDetailsUiState(
+                workoutDetails = WorkoutDetails(1, "benjamin", " ayesu", "10", "saklda")
+            ),
+            onDelete = {}
+        )
     }
 }
