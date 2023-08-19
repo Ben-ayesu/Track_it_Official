@@ -4,7 +4,7 @@
     <string name="back_button">Back</string>
     <string name="delete">Delete</string>
     <string name="delete_question">Are you sure you want to delete?</string>
-    <string name="no_workout_description">Oops!\nNo items in the inventory.\nTap + to add.</string>
+    <string name="no_workout_description">Oops!\nNo workouts saved in the list.\nTap + to add.</string>
     <string name="edit_workout_title">Edit Item</string>
     <string name="workout">Item</string>
     <string name="workout_detail_title">Item Details</string>

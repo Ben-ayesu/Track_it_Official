@@ -7,7 +7,7 @@ import com.example.trackitofficial.data.db.WorkoutDatabase
  * App container for Dependency injection.
  */
 interface AppContainer {
-    val workouts: WorkoutRepo
+    val workoutsRepository: WorkoutRepo
 }
 
 /**

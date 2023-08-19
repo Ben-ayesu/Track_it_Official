@@ -22,7 +22,7 @@ class TrackItEditViewModel(
 
     private val itemId: Int = checkNotNull(savedStateHandle[ItemEditDestination.itemIdArg])
 
-    private fun validateInput(uiState: WorkoutDetails = workoutUiState.itemDetails): Boolean {
+    private fun validateInput(uiState: WorkoutDetails = workoutUiState.workoutDetails): Boolean {
         return with(uiState) {
             name.isNotBlank() && price.isNotBlank() && quantity.isNotBlank()
         }

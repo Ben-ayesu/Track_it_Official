@@ -15,6 +15,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -26,6 +27,7 @@ import com.example.trackitofficial.TrackItTopAppBar
 import com.example.trackitofficial.ui.AppViewModelProvider
 import com.example.trackitofficial.ui.navigation.NavigationDestination
 import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 object WorkoutEntryDestination : NavigationDestination {
@@ -41,6 +43,7 @@ fun ItemEntryScreen(
     canNavigateBack: Boolean = true,
     viewModel: WorkoutEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
+    val corountineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
             TrackItTopAppBar(
@@ -51,9 +54,11 @@ fun ItemEntryScreen(
         }
     ) { innerPadding ->
         WorkoutEntryBody(
-            workoutUiState = viewModel.itemUiState,
+            workoutUiState = viewModel.workoutUiState,
             onItemValueChange = viewModel::updateUiState,
-            onSaveClick = { },
+            onSaveClick = {
+                corountineScope.launch { viewModel.saveWorkout() }
+            },
             modifier = Modifier
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
@@ -73,8 +78,8 @@ fun WorkoutEntryBody(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large)),
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
     ) {
-        ItemInputForm(
-            workoutDetails = workoutUiState.itemDetails,
+        workoutInputForm(
+            workoutDetails = workoutUiState.workoutDetails,
             onValueChange = onItemValueChange,
             modifier = Modifier.fillMaxWidth()
         )
@@ -91,7 +96,7 @@ fun WorkoutEntryBody(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ItemInputForm(
+fun workoutInputForm(
     workoutDetails: WorkoutDetails,
     modifier: Modifier = Modifier,
     onValueChange: (WorkoutDetails) -> Unit = {},
@@ -105,11 +110,11 @@ fun ItemInputForm(
             value = workoutDetails.name,
             onValueChange = { onValueChange(workoutDetails.copy(name = it)) },
             label = { Text(stringResource(R.string.workout_name_req)) },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            ),
+//            colors = OutlinedTextFieldDefaults.colors(
+//                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+//                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+//                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+//            ),
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
@@ -119,11 +124,11 @@ fun ItemInputForm(
             onValueChange = { onValueChange(workoutDetails.copy(price = it)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             label = { Text(stringResource(R.string.workout_price_req)) },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            ),
+//            colors = OutlinedTextFieldDefaults.colors(
+//                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+//                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+//                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+//            ),
             leadingIcon = { Text(Currency.getInstance(Locale.getDefault()).symbol) },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
@@ -134,11 +139,11 @@ fun ItemInputForm(
             onValueChange = { onValueChange(workoutDetails.copy(quantity = it)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             label = { Text(stringResource(R.string.workout_entry_title)) },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            ),
+//            colors = OutlinedTextFieldDefaults.colors(
+//                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+//                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+//                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+//            ),
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true

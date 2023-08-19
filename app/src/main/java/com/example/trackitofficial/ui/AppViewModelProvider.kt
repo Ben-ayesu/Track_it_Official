@@ -24,7 +24,7 @@ object AppViewModelProvider {
         }
         // Initializer for ItemEntryViewModel
         initializer {
-            WorkoutEntryViewModel()
+            WorkoutEntryViewModel(trackItApplication().container.workoutsRepository)
         }
 
         // Initializer for ItemDetailsViewModel
@@ -36,7 +36,7 @@ object AppViewModelProvider {
 
         // Initializer for HomeViewModel
         initializer {
-            HomeViewModel(trackItApplication().container.workouts)
+            HomeViewModel()
         }
     }
 }

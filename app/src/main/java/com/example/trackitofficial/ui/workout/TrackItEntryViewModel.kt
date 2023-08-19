@@ -3,33 +3,39 @@ package com.example.trackitofficial.ui.workout
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.tooling.data.EmptyGroup.name
 import androidx.lifecycle.ViewModel
+import com.example.trackitofficial.data.WorkoutRepo
 import com.example.trackitofficial.data.db.Workout
 
 /**
  * ViewModel to validate and insert items in the Room database.
  */
-class WorkoutEntryViewModel : ViewModel() {
+class WorkoutEntryViewModel(private val workoutRepo: WorkoutRepo) : ViewModel() {
 
     /**
      * Holds current item ui state
      */
-    var itemUiState by mutableStateOf(WorkoutUiState())
+    var workoutUiState by mutableStateOf(WorkoutUiState())
         private set
 
     /**
-     * Updates the [itemUiState] with the value provided in the argument. This method also triggers
+     * Updates the [workoutUiState] with the value provided in the argument. This method also triggers
      * a validation for input values.
      */
     fun updateUiState(itemDetails: WorkoutDetails) {
-        itemUiState =
-            WorkoutUiState(itemDetails = itemDetails, isEntryValid = validateInput(itemDetails))
+        workoutUiState =
+            WorkoutUiState(workoutDetails = itemDetails, isEntryValid = validateInput(itemDetails))
     }
 
-    private fun validateInput(uiState: WorkoutDetails = itemUiState.itemDetails): Boolean {
+    private fun validateInput(uiState: WorkoutDetails = workoutUiState.workoutDetails): Boolean {
         return with(uiState) {
             name.isNotBlank() && price.isNotBlank() && quantity.isNotBlank()
+        }
+    }
+
+    suspend fun saveWorkout() {
+        if (validateInput()) {
+            workoutRepo.insertWorkout(workoutUiState.workoutDetails.toItem())
         }
     }
 }
@@ -38,7 +44,7 @@ class WorkoutEntryViewModel : ViewModel() {
  * Represents Ui State for an Item.
  */
 data class WorkoutUiState(
-    val itemDetails: WorkoutDetails = WorkoutDetails(),
+    val workoutDetails: WorkoutDetails = WorkoutDetails(),
     val isEntryValid: Boolean = false
 )
 
@@ -66,17 +72,18 @@ fun WorkoutDetails.toItem(): Workout = Workout(
 /**
  * Extension function to convert [Item] to [WorkoutUiState]
  */
-fun Workout.toItemUiState(isEntryValid: Boolean = false): WorkoutUiState = ItemUiState(
-    itemDetails = this.toItemDetails(),
+fun Workout.toItemUiState(isEntryValid: Boolean = false): WorkoutUiState = WorkoutUiState(
+    workoutDetails = this.towrkoutDetails(),
     isEntryValid = isEntryValid
 )
 
 /**
  * Extension function to convert [Item] to [WorkoutDetails]
  */
-fun Workout.toItemDetails(): WorkoutDetails = ItemDetails(
+fun Workout.towrkoutDetails(): WorkoutDetails = WorkoutDetails(
     id = id,
-    name = name,
-    price = price.toString(),
-    quantity = quantity.toString()
+    name = "",
+    price = "",
+    rating = "",
+    quantity = ""
 )

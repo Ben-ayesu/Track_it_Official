@@ -21,5 +21,5 @@ class TrackItDetailsViewModel(
  * UI state for WorkoutDetailsScreen
  */
 data class WorkoutDetailsUiState(
-    val itemDetails: WorkoutDetails = WorkoutDetails()
+    val workoutDetails: WorkoutDetails = WorkoutDetails()
 )
