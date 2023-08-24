@@ -139,7 +139,7 @@ fun WorkoutDetails(
         ) {
             workoutDetailsRow(
                 labelResID = R.string.workout,
-                workoutDetail = workout.description,
+                workoutDetail = workout.workoutDescription,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -149,7 +149,7 @@ fun WorkoutDetails(
             )
             workoutDetailsRow(
                 labelResID = R.string.workout,
-                workoutDetail = workout.description,
+                workoutDetail = workout.workoutDescription,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -159,7 +159,7 @@ fun WorkoutDetails(
             )
             workoutDetailsRow(
                 labelResID = R.string.workout,
-                workoutDetail = workout.description,
+                workoutDetail = workout.workoutDescription,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen

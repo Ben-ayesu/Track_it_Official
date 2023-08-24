@@ -106,7 +106,7 @@ private fun HomeBody(
         } else {
             WorkoutList(
                 workoutList = workoutList,
-                onItemClick = { onItemClick(it.id) },
+                onItemClick = { onItemClick(it.workoutId) },
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
             )
         }
@@ -119,7 +119,7 @@ private fun WorkoutList(
     onItemClick: (Workout) -> Unit, modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier = modifier) {
-        items(items = workoutList, key = { it.id }) { workout ->
+        items(items = workoutList, key = { it.workoutId }) { workout ->
             Workout(workout = workout,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
@@ -143,12 +143,12 @@ private fun Workout(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = workout.title,
+                    text = workout.workoutTitle,
                     style = MaterialTheme.typography.titleLarge,
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
-                    text = workout.description,
+                    text = workout.workoutDescription,
                     style = MaterialTheme.typography.titleMedium
                 )
             }

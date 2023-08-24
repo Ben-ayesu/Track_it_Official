@@ -62,11 +62,11 @@ data class WorkoutDetails(
  * [WorkoutDetails.quantity] is not a valid [Int], then the quantity will be set to 0
  */
 fun WorkoutDetails.toItem(): Workout = Workout(
-    id = id,
-    title = name,
-    description = price,
-    rating = rating,
-    lastModified = quantity
+    workoutId = id,
+    workoutTitle = name,
+    workoutDescription = price,
+    workoutRating = rating,
+    workoutLastModified = quantity
 )
 
 /**
@@ -81,7 +81,7 @@ fun Workout.toItemUiState(isEntryValid: Boolean = false): WorkoutUiState = Worko
  * Extension function to convert [Item] to [WorkoutDetails]
  */
 fun Workout.towrkoutDetails(): WorkoutDetails = WorkoutDetails(
-    id = id,
+    id = workoutId,
     name = "",
     price = "",
     rating = "",
