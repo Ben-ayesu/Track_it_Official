@@ -25,7 +25,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -33,14 +32,11 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trackitofficial.R
 import com.example.trackitofficial.TrackItTopAppBar
 import com.example.trackitofficial.data.db.Workout
-import com.example.trackitofficial.ui.AppViewModelProvider
 import com.example.trackitofficial.ui.navigation.NavigationDestination
 import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
-import kotlinx.coroutines.launch
 
 object WorkoutDetailsDestination : NavigationDestination {
     override val route = "item_details"
@@ -55,10 +51,7 @@ fun WorkoutDetailsScreen(
     navigateToEditItem: (Int) -> Unit,
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: TrackItDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val uiState = viewModel.uiState.collectAsState()
-    val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
             TrackItTopAppBar(
@@ -68,7 +61,7 @@ fun WorkoutDetailsScreen(
             )
         }, floatingActionButton = {
             FloatingActionButton(
-                onClick = { navigateToEditItem(uiState.value.itemDetails.id) },
+                onClick = { navigateToEditItem(0) },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
 
@@ -81,17 +74,8 @@ fun WorkoutDetailsScreen(
         }, modifier = modifier
     ) { innerPadding ->
         WorkoutDetailsBody(
-            workoutDetailsUiState = uiState.value,
-            onDelete = {
-                // Note: If the user rotates the screen very fast, the operation may get cancelled
-                // and the item may not be deleted from the Database. This is because when config
-                // change occurs, the Activity will be recreated and the rememberCoroutineScope will
-                // be cancelled - since the scope is bound to composition.
-                coroutineScope.launch {
-                    viewModel.deleteItem()
-                    navigateBack()
-                }
-            },
+            workoutDetailsUiState = WorkoutDetailsUiState(),
+            onDelete = { },
             modifier = Modifier
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
@@ -111,16 +95,9 @@ private fun WorkoutDetailsBody(
     ) {
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
         WorkoutDetails(
-            workout = workoutDetailsUiState.itemDetails.toItem(), modifier = Modifier.fillMaxWidth()
+            workout = workoutDetailsUiState.workoutDetails.toItem(),
+            modifier = Modifier.fillMaxWidth()
         )
-//        Button(
-//            onClick = onSellItem,
-//            modifier = Modifier.fillMaxWidth(),
-//            shape = MaterialTheme.shapes.small,
-//            enabled = !workoutDetailsUiState.outOfStock
-//        ) {
-//            Text(stringResource(R.string.sell))
-//        }
         OutlinedButton(
             onClick = { deleteConfirmationRequired = true },
             shape = MaterialTheme.shapes.small,
@@ -148,7 +125,8 @@ fun WorkoutDetails(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier, colors = CardDefaults.cardColors(
+        modifier = modifier,
+        colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
@@ -159,9 +137,9 @@ fun WorkoutDetails(
                 .padding(dimensionResource(id = R.dimen.padding_medium)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
         ) {
-            ItemDetailsRow(
+            workoutDetailsRow(
                 labelResID = R.string.workout,
-                itemDetail = workout.description,
+                workoutDetail = workout.description,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -169,9 +147,9 @@ fun WorkoutDetails(
                     )
                 )
             )
-            ItemDetailsRow(
+            workoutDetailsRow(
                 labelResID = R.string.workout,
-                itemDetail = workout.description,
+                workoutDetail = workout.description,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -179,9 +157,9 @@ fun WorkoutDetails(
                     )
                 )
             )
-            ItemDetailsRow(
+            workoutDetailsRow(
                 labelResID = R.string.workout,
-                itemDetail = workout.description,
+                workoutDetail = workout.description,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -195,19 +173,21 @@ fun WorkoutDetails(
 }
 
 @Composable
-private fun ItemDetailsRow(
-    @StringRes labelResID: Int, itemDetail: String, modifier: Modifier = Modifier
+private fun workoutDetailsRow(
+    @StringRes labelResID: Int,
+    workoutDetail: String, modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier) {
         Text(text = stringResource(labelResID))
         Spacer(modifier = Modifier.weight(1f))
-        Text(text = itemDetail, fontWeight = FontWeight.Bold)
+        Text(text = workoutDetail, fontWeight = FontWeight.Bold)
     }
 }
 
 @Composable
 private fun DeleteConfirmationDialog(
-    onDeleteConfirm: () -> Unit, onDeleteCancel: () -> Unit, modifier: Modifier = Modifier
+    onDeleteConfirm: () -> Unit,
+    onDeleteCancel: () -> Unit, modifier: Modifier = Modifier
 ) {
     AlertDialog(onDismissRequest = { /* Do nothing */ },
         title = { Text(stringResource(R.string.attention)) },
@@ -229,9 +209,11 @@ private fun DeleteConfirmationDialog(
 @Composable
 fun ItemDetailsScreenPreview() {
     TrackItOfficialTheme {
-//        WorkoutDetailsBody(
-//            WorkoutDetailsScreen(itemDetails = ItemDetails(1, "Pen", "$100", "10")
-//        ), onSellItem = {}, onDelete = {})
-//    }
+        WorkoutDetailsBody(
+            WorkoutDetailsUiState(
+                workoutDetails = WorkoutDetails(1, "benjamin", " ayesu", "10", "saklda")
+            ),
+            onDelete = {}
+        )
     }
 }

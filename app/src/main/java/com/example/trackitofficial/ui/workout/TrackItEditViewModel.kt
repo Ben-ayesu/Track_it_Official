@@ -1,6 +1,6 @@
 package com.example.trackitofficial.ui.workout
 
-import ItemEditDestination
+import WorkoutEditDestination
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -20,9 +20,9 @@ class TrackItEditViewModel(
     var workoutUiState by mutableStateOf(WorkoutUiState())
         private set
 
-    private val itemId: Int = checkNotNull(savedStateHandle[ItemEditDestination.itemIdArg])
+    private val itemId: Int = checkNotNull(savedStateHandle[WorkoutEditDestination.itemIdArg])
 
-    private fun validateInput(uiState: WorkoutDetails = workoutUiState.itemDetails): Boolean {
+    private fun validateInput(uiState: WorkoutDetails = workoutUiState.workoutDetails): Boolean {
         return with(uiState) {
             name.isNotBlank() && price.isNotBlank() && quantity.isNotBlank()
         }
