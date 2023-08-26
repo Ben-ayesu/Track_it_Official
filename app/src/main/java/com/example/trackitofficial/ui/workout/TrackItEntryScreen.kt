@@ -1,6 +1,5 @@
 package com.example.trackitofficial.ui.workout
 
-import android.icu.util.Currency
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +11,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,11 +28,10 @@ import com.example.trackitofficial.ui.AppViewModelProvider
 import com.example.trackitofficial.ui.navigation.NavigationDestination
 import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 object WorkoutEntryDestination : NavigationDestination {
-    override val route = "item_entry"
-    override val titleRes = R.string.workout_entry_title
+    override val route = "workout_entry"
+    override val titleRes = R.string.edit_workout_title
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,9 +40,9 @@ fun WorkoutEntryScreen(
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
     canNavigateBack: Boolean = true,
-    viewModel: WorkoutEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: TrackEntryItViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val corountineScope = rememberCoroutineScope()
+    val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
             TrackItTopAppBar(
@@ -57,7 +56,7 @@ fun WorkoutEntryScreen(
             workoutUiState = viewModel.workoutUiState,
             onItemValueChange = viewModel::updateUiState,
             onSaveClick = {
-                corountineScope.launch {
+                coroutineScope.launch {
                     viewModel.saveWorkout()
                     navigateBack()
                 }
@@ -81,7 +80,7 @@ fun WorkoutEntryBody(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large)),
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
     ) {
-        workoutInputForm(
+        WorkoutInputForm(
             workoutDetails = workoutUiState.workoutDetails,
             onValueChange = onItemValueChange,
             modifier = Modifier.fillMaxWidth()
@@ -97,9 +96,8 @@ fun WorkoutEntryBody(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun workoutInputForm(
+fun WorkoutInputForm(
     workoutDetails: WorkoutDetails,
     modifier: Modifier = Modifier,
     onValueChange: (WorkoutDetails) -> Unit = {},
@@ -110,43 +108,42 @@ fun workoutInputForm(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
         OutlinedTextField(
-            value = workoutDetails.name,
-            onValueChange = { onValueChange(workoutDetails.copy(name = it)) },
+            value = workoutDetails.title,
+            onValueChange = { onValueChange(workoutDetails.copy(title = it)) },
             label = { Text(stringResource(R.string.workout_name_req)) },
-//            colors = OutlinedTextFieldDefaults.colors(
-//                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-//                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-//                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-//            ),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            ),
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
         )
         OutlinedTextField(
-            value = workoutDetails.price,
-            onValueChange = { onValueChange(workoutDetails.copy(price = it)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            value = workoutDetails.description,
+            onValueChange = { onValueChange(workoutDetails.copy(description = it)) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             label = { Text(stringResource(R.string.workout_price_req)) },
-//            colors = OutlinedTextFieldDefaults.colors(
-//                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-//                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-//                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-//            ),
-            leadingIcon = { Text(Currency.getInstance(Locale.getDefault()).symbol) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            ),
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
         )
         OutlinedTextField(
-            value = workoutDetails.quantity,
-            onValueChange = { onValueChange(workoutDetails.copy(quantity = it)) },
+            value = workoutDetails.date,
+            onValueChange = { onValueChange(workoutDetails.copy(date = it)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            label = { Text(stringResource(R.string.workout_entry_title)) },
-//            colors = OutlinedTextFieldDefaults.colors(
-//                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-//                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-//                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-//            ),
+            label = { Text(stringResource(R.string.workout_rating_title)) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            ),
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
@@ -166,7 +163,7 @@ private fun ItemEntryScreenPreview() {
     TrackItOfficialTheme {
         WorkoutEntryBody(workoutUiState = WorkoutUiState(
             WorkoutDetails(
-                name = "Item name", price = "10.00", quantity = "5"
+                title = "Item name", description = "10.00", date = "5"
             )
         ), onItemValueChange = {}, onSaveClick = {})
     }

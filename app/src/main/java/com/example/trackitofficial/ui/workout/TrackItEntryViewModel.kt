@@ -10,7 +10,7 @@ import com.example.trackitofficial.data.db.Workout
 /**
  * ViewModel to validate and insert items in the Room database.
  */
-class WorkoutEntryViewModel(private val workoutRepo: WorkoutRepo) : ViewModel() {
+class TrackEntryItViewModel(private val workoutRepo: WorkoutRepo) : ViewModel() {
 
     /**
      * Holds current item ui state
@@ -22,20 +22,20 @@ class WorkoutEntryViewModel(private val workoutRepo: WorkoutRepo) : ViewModel() 
      * Updates the [workoutUiState] with the value provided in the argument. This method also triggers
      * a validation for input values.
      */
-    fun updateUiState(itemDetails: WorkoutDetails) {
+    fun updateUiState(workoutDetails: WorkoutDetails) {
         workoutUiState =
-            WorkoutUiState(workoutDetails = itemDetails, isEntryValid = validateInput(itemDetails))
+            WorkoutUiState(workoutDetails = workoutDetails, isEntryValid = validateInput(workoutDetails))
     }
 
     private fun validateInput(uiState: WorkoutDetails = workoutUiState.workoutDetails): Boolean {
         return with(uiState) {
-            name.isNotBlank() && price.isNotBlank() && quantity.isNotBlank()
+            title.isNotBlank() && description.isNotBlank() && date.isNotBlank()
         }
     }
 
     suspend fun saveWorkout() {
         if (validateInput()) {
-            workoutRepo.insertWorkout(workoutUiState.workoutDetails.toItem())
+            workoutRepo.insertWorkout(workoutUiState.workoutDetails.toWorkout())
         }
     }
 }
@@ -50,40 +50,41 @@ data class WorkoutUiState(
 
 data class WorkoutDetails(
     val id: Int = 0,
-    val name: String = "",
-    val price: String = "",
+    val title: String = "",
+    val description: String = "",
     val rating: String = "",
-    val quantity: String = "",
+    val date: String = "",
 )
 
 /**
- * Extension function to convert [WorkoutDetails] to [Item]. If the value of [WorkoutDetails.price] is
+ * Extension function to convert [WorkoutDetails] to [Workout]. If the value of [WorkoutDetails.description] is
  * not a valid [Double], then the price will be set to 0.0. Similarly if the value of
- * [WorkoutDetails.quantity] is not a valid [Int], then the quantity will be set to 0
+ * [WorkoutDetails.date] is not a valid [Int], then the quantity will be set to 0
  */
-fun WorkoutDetails.toItem(): Workout = Workout(
+fun WorkoutDetails.toWorkout(): Workout = Workout(
     workoutId = id,
-    workoutTitle = name,
-    workoutDescription = price,
+    workoutTitle = title,
+    workoutDescription = description,
     workoutRating = rating,
-    workoutLastModified = quantity
+    workoutLastModified = date
 )
 
 /**
- * Extension function to convert [Item] to [WorkoutUiState]
+ * Extension function to convert [Workout] to [WorkoutUiState]
  */
-fun Workout.toItemUiState(isEntryValid: Boolean = false): WorkoutUiState = WorkoutUiState(
-    workoutDetails = this.towrkoutDetails(),
+fun Workout.toWorkoutUiState (isEntryValid: Boolean = false): WorkoutUiState = WorkoutUiState(
+    workoutDetails = this.toWorkoutDetails(),
     isEntryValid = isEntryValid
 )
 
+
 /**
- * Extension function to convert [Item] to [WorkoutDetails]
+ * Extension function to convert [Workout] to [WorkoutDetails]
  */
-fun Workout.towrkoutDetails(): WorkoutDetails = WorkoutDetails(
+fun Workout.toWorkoutDetails(): WorkoutDetails = WorkoutDetails(
     id = workoutId,
-    name = "",
-    price = "",
+    title = "",
+    description = "",
     rating = "",
-    quantity = ""
+    date = ""
 )

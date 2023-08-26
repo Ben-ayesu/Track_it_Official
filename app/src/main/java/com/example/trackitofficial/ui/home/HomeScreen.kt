@@ -23,6 +23,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -31,9 +33,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trackitofficial.R
 import com.example.trackitofficial.TrackItTopAppBar
 import com.example.trackitofficial.data.db.Workout
+import com.example.trackitofficial.ui.AppViewModelProvider
 import com.example.trackitofficial.ui.navigation.NavigationDestination
 import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
 
@@ -52,7 +56,9 @@ fun HomeScreen(
     navigateToItemEntry: () -> Unit,
     navigateToItemUpdate: (Int) -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
+    val homeUiState by viewModel.homeUiState.collectAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
@@ -72,13 +78,13 @@ fun HomeScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.workout_entry_title)
+                    contentDescription = stringResource(R.string.workout_rating_title)
                 )
             }
         },
     ) { innerPadding ->
         HomeBody(
-            workoutList = listOf(),
+            workoutList = homeUiState.workoutList,
             onItemClick = navigateToItemUpdate,
             modifier = modifier
                 .padding(innerPadding)
@@ -120,7 +126,8 @@ private fun WorkoutList(
 ) {
     LazyColumn(modifier = modifier) {
         items(items = workoutList, key = { it.workoutId }) { workout ->
-            Workout(workout = workout,
+            Workout(
+                workout = workout,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
                     .clickable { onItemClick(workout) })
@@ -161,7 +168,7 @@ private fun Workout(
 fun HomeBodyPreview() {
     TrackItOfficialTheme {
         HomeBody(listOf(
-            Workout("Sprints", "Game", "April", "Good"), Workout("Sprints", "Game", "April", "Good"), Workout("Sprints", "Game", "April", "Good")
+            Workout(0,"Sprints", "Game", "April", "Good"), Workout(1,"Sprints", "Game", "April", "Good"), Workout(2,"Sprints", "Game", "April", "Good")
         ), onItemClick = {})
     }
 }
@@ -179,7 +186,7 @@ fun HomeBodyEmptyListPreview() {
 fun InventoryItemPreview() {
     TrackItOfficialTheme {
         Workout(
-            Workout("Sprints", "Game", "April", "Good"),
+            Workout(0,"Sprints", "Game", "April", "Good")
         )
     }
 }

@@ -2,6 +2,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -13,9 +14,10 @@ import com.example.trackitofficial.ui.navigation.NavigationDestination
 import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
 import com.example.trackitofficial.ui.workout.TrackItEditViewModel
 import com.example.trackitofficial.ui.workout.WorkoutEntryBody
+import kotlinx.coroutines.launch
 
 object WorkoutEditDestination : NavigationDestination {
-    override val route = "item_edit"
+    override val route = "edit_workout"
     override val titleRes = R.string.edit_workout_title
     const val itemIdArg = "itemId"
     val routeWithArgs = "$route/{$itemIdArg}"
@@ -29,6 +31,7 @@ fun TrackItEditScreen(
     modifier: Modifier = Modifier,
     viewModel: TrackItEditViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
+    val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
             TrackItTopAppBar(
@@ -41,8 +44,13 @@ fun TrackItEditScreen(
     ) { innerPadding ->
         WorkoutEntryBody(
             workoutUiState = viewModel.workoutUiState,
-            onItemValueChange = { },
-            onSaveClick = { },
+            onItemValueChange = viewModel::updateUiState,
+            onSaveClick = {
+                coroutineScope.launch {
+                    viewModel.updateWorkout()
+                    navigateBack()
+                }
+            },
             modifier = Modifier.padding(innerPadding)
         )
     }

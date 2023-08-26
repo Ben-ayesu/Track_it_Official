@@ -23,8 +23,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -32,14 +34,17 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trackitofficial.R
 import com.example.trackitofficial.TrackItTopAppBar
 import com.example.trackitofficial.data.db.Workout
+import com.example.trackitofficial.ui.AppViewModelProvider
 import com.example.trackitofficial.ui.navigation.NavigationDestination
 import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
+import kotlinx.coroutines.launch
 
 object WorkoutDetailsDestination : NavigationDestination {
-    override val route = "item_details"
+    override val route = "workout_details"
     override val titleRes = R.string.workout_detail_title
     const val itemIdArg = "itemId"
     val routeWithArgs = "$route/{$itemIdArg}"
@@ -51,7 +56,10 @@ fun WorkoutDetailsScreen(
     navigateToEditItem: (Int) -> Unit,
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: TrackItDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
+    val uiState = viewModel.uiState.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
             TrackItTopAppBar(
@@ -61,7 +69,7 @@ fun WorkoutDetailsScreen(
             )
         }, floatingActionButton = {
             FloatingActionButton(
-                onClick = { navigateToEditItem(0) },
+                onClick = { navigateToEditItem(uiState.value.workoutDetails.id) },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
 
@@ -74,8 +82,13 @@ fun WorkoutDetailsScreen(
         }, modifier = modifier
     ) { innerPadding ->
         WorkoutDetailsBody(
-            workoutDetailsUiState = WorkoutDetailsUiState(),
-            onDelete = { },
+            workoutDetailsUiState = uiState.value,
+            onDelete = {
+                coroutineScope.launch {
+                    viewModel.deleteItem()
+                    navigateBack()
+                }
+            },
             modifier = Modifier
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
@@ -95,7 +108,7 @@ private fun WorkoutDetailsBody(
     ) {
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
         WorkoutDetails(
-            workout = workoutDetailsUiState.workoutDetails.toItem(),
+            workout = workoutDetailsUiState.workoutDetails.toWorkout(),
             modifier = Modifier.fillMaxWidth()
         )
         OutlinedButton(
@@ -137,7 +150,7 @@ fun WorkoutDetails(
                 .padding(dimensionResource(id = R.dimen.padding_medium)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
         ) {
-            workoutDetailsRow(
+            WorkoutDetailsRow(
                 labelResID = R.string.workout,
                 workoutDetail = workout.workoutDescription,
                 modifier = Modifier.padding(
@@ -147,7 +160,7 @@ fun WorkoutDetails(
                     )
                 )
             )
-            workoutDetailsRow(
+            WorkoutDetailsRow(
                 labelResID = R.string.workout,
                 workoutDetail = workout.workoutDescription,
                 modifier = Modifier.padding(
@@ -157,7 +170,7 @@ fun WorkoutDetails(
                     )
                 )
             )
-            workoutDetailsRow(
+            WorkoutDetailsRow(
                 labelResID = R.string.workout,
                 workoutDetail = workout.workoutDescription,
                 modifier = Modifier.padding(
@@ -173,9 +186,10 @@ fun WorkoutDetails(
 }
 
 @Composable
-private fun workoutDetailsRow(
+private fun WorkoutDetailsRow(
     @StringRes labelResID: Int,
-    workoutDetail: String, modifier: Modifier = Modifier
+    workoutDetail: String,
+    modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier) {
         Text(text = stringResource(labelResID))
