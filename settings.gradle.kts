@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Track it Official"
+rootProject.name = "TrackitOfficial"
 include(":app")
