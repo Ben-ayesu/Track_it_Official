@@ -8,20 +8,20 @@ import androidx.room.RoomDatabase
 /**
  * Database class with a singleton Instance object.
  */
-@Database(entities = [Workout::class], version = 1)
+@Database(entities = [Workout::class], version = 1, exportSchema = false)
 abstract class WorkoutDatabase : RoomDatabase() {
     abstract fun workoutDao(): WorkoutDao
 
     companion object {
         @Volatile
-        private var instance: WorkoutDatabase? = null
+        private var Instance: WorkoutDatabase? = null
 
-        fun getWorkoutDatabase(context: Context): WorkoutDatabase {
+        fun getDatabase(context: Context): WorkoutDatabase {
             // if the Instance is not null, return it, otherwise create a new database instance.
-            return instance ?: synchronized(this) {
+            return Instance ?: synchronized(this) {
                 Room.databaseBuilder(context, WorkoutDatabase::class.java, "workout_database")
                     .build()
-                    .also { instance = it }
+                    .also { Instance = it }
             }
         }
     }
