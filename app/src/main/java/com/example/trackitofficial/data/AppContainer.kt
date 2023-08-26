@@ -2,6 +2,8 @@ package com.example.trackitofficial.data
 
 import android.content.Context
 import com.example.trackitofficial.data.db.WorkoutDatabase
+import com.example.trackitofficial.data.db.repo.OfflineWorkoutRepo
+import com.example.trackitofficial.data.db.repo.WorkoutRepo
 
 /**
  * App container for Dependency injection.

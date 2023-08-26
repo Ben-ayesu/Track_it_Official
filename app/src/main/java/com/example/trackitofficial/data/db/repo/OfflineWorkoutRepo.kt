@@ -1,7 +1,7 @@
-package com.example.trackitofficial.data
+package com.example.trackitofficial.data.db.repo
 
-import com.example.trackitofficial.data.db.Workout
-import com.example.trackitofficial.data.db.WorkoutDao
+import com.example.trackitofficial.data.db.entities.Workout
+import com.example.trackitofficial.data.db.dao.WorkoutDao
 import kotlinx.coroutines.flow.Flow
 
 class OfflineWorkoutRepo(private val workoutDao: WorkoutDao) : WorkoutRepo {

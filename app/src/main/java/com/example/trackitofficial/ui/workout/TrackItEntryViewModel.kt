@@ -4,14 +4,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.trackitofficial.data.WorkoutRepo
-import com.example.trackitofficial.data.db.Workout
+import com.example.trackitofficial.data.db.repo.WorkoutRepo
+import com.example.trackitofficial.data.db.entities.Workout
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 /**
  * ViewModel to validate and insert items in the Room database.
  */
 class TrackEntryItViewModel(private val workoutRepo: WorkoutRepo) : ViewModel() {
-
     /**
      * Holds current item ui state
      */
@@ -66,7 +67,7 @@ fun WorkoutDetails.toWorkout(): Workout = Workout(
     workoutTitle = title,
     workoutDescription = description,
     workoutRating = rating,
-    workoutLastModified = date
+    workoutDateTime = date
 )
 
 /**
@@ -86,5 +87,5 @@ fun Workout.toWorkoutDetails(): WorkoutDetails = WorkoutDetails(
     title = workoutTitle,
     description = workoutDescription,
     rating = workoutRating,
-    date = workoutLastModified
+    date = workoutDateTime
 )

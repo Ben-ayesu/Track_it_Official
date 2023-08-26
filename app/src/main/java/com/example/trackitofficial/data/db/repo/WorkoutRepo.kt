@@ -1,6 +1,6 @@
-package com.example.trackitofficial.data
+package com.example.trackitofficial.data.db.repo
 
-import com.example.trackitofficial.data.db.Workout
+import com.example.trackitofficial.data.db.entities.Workout
 import kotlinx.coroutines.flow.Flow
 
 /**

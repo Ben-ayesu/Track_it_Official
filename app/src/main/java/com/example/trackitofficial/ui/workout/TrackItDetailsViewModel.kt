@@ -3,7 +3,7 @@ package com.example.trackitofficial.ui.workout
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.trackitofficial.data.WorkoutRepo
+import com.example.trackitofficial.data.db.repo.WorkoutRepo
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull

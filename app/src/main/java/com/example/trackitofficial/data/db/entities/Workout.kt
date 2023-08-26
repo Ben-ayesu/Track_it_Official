@@ -1,4 +1,4 @@
-package com.example.trackitofficial.data.db
+package com.example.trackitofficial.data.db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -12,6 +12,6 @@ data class Workout(
     val workoutId: Int = 0,
     val workoutTitle: String,
     val workoutDescription: String,
-    val workoutLastModified: String,
+    val workoutDateTime: String,
     val workoutRating: String,
 )

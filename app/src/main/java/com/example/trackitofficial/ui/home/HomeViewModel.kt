@@ -2,8 +2,8 @@ package com.example.trackitofficial.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.trackitofficial.data.WorkoutRepo
-import com.example.trackitofficial.data.db.Workout
+import com.example.trackitofficial.data.db.repo.WorkoutRepo
+import com.example.trackitofficial.data.db.entities.Workout
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map

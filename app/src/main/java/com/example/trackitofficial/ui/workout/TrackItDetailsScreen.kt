@@ -34,7 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trackitofficial.R
 import com.example.trackitofficial.TrackItTopAppBar
-import com.example.trackitofficial.data.db.Workout
+import com.example.trackitofficial.data.db.entities.Workout
 import com.example.trackitofficial.ui.AppViewModelProvider
 import com.example.trackitofficial.ui.navigation.NavigationDestination
 import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
@@ -148,7 +148,7 @@ fun WorkoutDetails(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
         ) {
             WorkoutDetailsRow(
-                date = workout.workoutLastModified,
+                date = workout.workoutDateTime,
                 workoutDescription = workout.workoutDescription,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(

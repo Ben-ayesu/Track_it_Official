@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -27,16 +29,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trackitofficial.R
 import com.example.trackitofficial.TrackItTopAppBar
-import com.example.trackitofficial.data.db.Workout
+import com.example.trackitofficial.data.db.entities.Workout
 import com.example.trackitofficial.ui.AppViewModelProvider
 import com.example.trackitofficial.ui.navigation.NavigationDestination
 import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
@@ -74,11 +80,15 @@ fun HomeScreen(
             FloatingActionButton(
                 onClick = navigateToItemEntry,
                 shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
+                modifier = Modifier
+                    .size(100.dp)
+                    .padding(dimensionResource(id = R.dimen.padding_large))
             ) {
                 Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.workout_rating_title)
+                    painter = painterResource(id = R.drawable.add_note),
+                    contentDescription = stringResource(R.string.workout_rating_title),
+                    modifier = Modifier
+                        .padding(dimensionResource(id = R.dimen.padding_medium))
                 )
             }
         },
@@ -99,25 +109,32 @@ private fun HomeBody(
     onItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-    ) {
-        if (workoutList.isEmpty()) {
-            Text(
-                text = stringResource(R.string.no_workout_description),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge
-            )
+    if (workoutList.isEmpty()) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = modifier
+            ) {
+                Text(
+                    text = stringResource(R.string.no_workout_description),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }
         } else {
-            WorkoutList(
-                workoutList = workoutList,
-                onItemClick = { onItemClick(it.workoutId) },
-                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = modifier
+            ) {
+                WorkoutList(
+                    workoutList = workoutList,
+                    onItemClick = { onItemClick(it.workoutId) },
+                    modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
+                )
+            }
+
         }
     }
-}
 
 @Composable
 private fun WorkoutList(
@@ -130,7 +147,8 @@ private fun WorkoutList(
                 workout = workout,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
-                    .clickable { onItemClick(workout) })
+                    .clickable { onItemClick(workout) }
+            )
         }
     }
 }
@@ -142,21 +160,29 @@ private fun Workout(
     Card(
         modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
+        Row(
+            modifier.fillMaxWidth()
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth()
+            Column(
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
             ) {
                 Text(
                     text = workout.workoutTitle,
                     style = MaterialTheme.typography.titleLarge,
+                    maxLines = 1,
+                    fontWeight = FontWeight.Bold
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
                     text = workout.workoutDescription,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 4
+                )
+                Text(
+                    text = workout.workoutDateTime,
+                    style = MaterialTheme.typography.labelSmall,
+                    textAlign = TextAlign.Center
                 )
             }
         }
