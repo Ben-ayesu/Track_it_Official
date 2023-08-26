@@ -1,6 +1,5 @@
 package com.example.trackitofficial.data.db
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -10,9 +9,9 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "workouts")
 data class Workout(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "workout_id") val workoutId: Int = 0,
-    @ColumnInfo(name = "workout_title") val workoutTitle: String,
-    @ColumnInfo(name = "workout_description") val workoutDescription: String,
-    @ColumnInfo(name = "workout_lastModified") val workoutLastModified: String,
-    @ColumnInfo(name = "workout_rating") val workoutRating: String,
+    val workoutId: Int = 0,
+    val workoutTitle: String,
+    val workoutDescription: String,
+    val workoutLastModified: String,
+    val workoutRating: String,
 )

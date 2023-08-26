@@ -27,15 +27,15 @@ class TrackEntryItViewModel(private val workoutRepo: WorkoutRepo) : ViewModel() 
             WorkoutUiState(workoutDetails = workoutDetails, isEntryValid = validateInput(workoutDetails))
     }
 
-    private fun validateInput(uiState: WorkoutDetails = workoutUiState.workoutDetails): Boolean {
-        return with(uiState) {
-            title.isNotBlank() && description.isNotBlank() && date.isNotBlank()
-        }
-    }
-
     suspend fun saveWorkout() {
         if (validateInput()) {
             workoutRepo.insertWorkout(workoutUiState.workoutDetails.toWorkout())
+        }
+    }
+
+    private fun validateInput(uiState: WorkoutDetails = workoutUiState.workoutDetails): Boolean {
+        return with(uiState) {
+            title.isNotBlank() && description.isNotBlank() && date.isNotBlank()
         }
     }
 }
@@ -83,8 +83,8 @@ fun Workout.toWorkoutUiState (isEntryValid: Boolean = false): WorkoutUiState = W
  */
 fun Workout.toWorkoutDetails(): WorkoutDetails = WorkoutDetails(
     id = workoutId,
-    title = "",
-    description = "",
-    rating = "",
-    date = ""
+    title = workoutTitle,
+    description = workoutDescription,
+    rating = workoutRating,
+    date = workoutLastModified
 )

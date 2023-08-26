@@ -1,10 +1,7 @@
 package com.example.trackitofficial.ui.workout
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -151,28 +148,8 @@ fun WorkoutDetails(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
         ) {
             WorkoutDetailsRow(
-                labelResID = R.string.workout,
-                workoutDetail = workout.workoutDescription,
-                modifier = Modifier.padding(
-                    horizontal = dimensionResource(
-                        id = R.dimen
-                            .padding_medium
-                    )
-                )
-            )
-            WorkoutDetailsRow(
-                labelResID = R.string.workout,
-                workoutDetail = workout.workoutDescription,
-                modifier = Modifier.padding(
-                    horizontal = dimensionResource(
-                        id = R.dimen
-                            .padding_medium
-                    )
-                )
-            )
-            WorkoutDetailsRow(
-                labelResID = R.string.workout,
-                workoutDetail = workout.workoutDescription,
+                date = workout.workoutLastModified,
+                workoutDescription = workout.workoutDescription,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -181,20 +158,18 @@ fun WorkoutDetails(
                 )
             )
         }
-
     }
 }
 
 @Composable
 private fun WorkoutDetailsRow(
-    @StringRes labelResID: Int,
-    workoutDetail: String,
+    date: String,
+    workoutDescription: String,
     modifier: Modifier = Modifier
 ) {
-    Row(modifier = modifier) {
-        Text(text = stringResource(labelResID))
-        Spacer(modifier = Modifier.weight(1f))
-        Text(text = workoutDetail, fontWeight = FontWeight.Bold)
+    Column(modifier = modifier) {
+        Text(text = date)
+        Text(text = workoutDescription, fontWeight = FontWeight.Bold)
     }
 }
 
