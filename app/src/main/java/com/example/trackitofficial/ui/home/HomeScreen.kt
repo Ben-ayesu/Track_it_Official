@@ -179,7 +179,7 @@ private fun Workout(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = workout.workoutDateTime,
+                        text = workout.workoutDate,
                         style = MaterialTheme.typography.labelSmall,
                         textAlign = TextAlign.Center
                     )

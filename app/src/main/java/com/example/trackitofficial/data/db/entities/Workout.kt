@@ -10,8 +10,8 @@ import androidx.room.PrimaryKey
 data class Workout(
     @PrimaryKey(autoGenerate = true)
     val workoutId: Int = 0,
+    val workoutDate: String,
     val workoutTitle: String,
     val workoutDescription: String,
-    val workoutDateTime: String,
     val workoutRating: String,
 )

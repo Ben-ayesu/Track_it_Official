@@ -148,7 +148,7 @@ fun WorkoutDetails(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
         ) {
             WorkoutDetailsRow(
-                date = workout.workoutDateTime,
+                date = workout.workoutDate,
                 workoutDescription = workout.workoutDescription,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
