@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 
 object WorkoutEntryDestination : NavigationDestination {
     override val route = "workout_entry"
-    override val titleRes = R.string.edit_workout_title
+    override val titleRes = R.string.new_workout
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
