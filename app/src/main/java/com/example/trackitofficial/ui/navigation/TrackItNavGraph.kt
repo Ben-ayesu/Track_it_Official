@@ -1,5 +1,7 @@
 package com.example.trackitofficial.ui.navigation
 
+import CreateWorkoutEntryDestination
+import CreateWorkoutScreen
 import TrackItEditScreen
 import WorkoutEditDestination
 import androidx.compose.runtime.Composable
@@ -36,6 +38,12 @@ fun TrackItNavHost(
                     navController.navigate("${WorkoutDetailsDestination.route}/${it}")
                 }
             )
+        }
+        composable(route = CreateWorkoutEntryDestination.route) {
+            CreateWorkoutScreen(
+                navigateBack = { navController.navigateUp() }
+            )
+
         }
         composable(route = WorkoutEntryDestination.route) {
             WorkoutEntryScreen(
