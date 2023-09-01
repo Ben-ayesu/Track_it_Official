@@ -41,7 +41,8 @@ fun TrackItNavHost(
         }
         composable(route = CreateWorkoutEntryDestination.route) {
             CreateWorkoutScreen(
-                navigateBack = { navController.navigateUp() }
+                navigateBack = { navController.popBackStack() },
+                onNavigateUp = { navController.popBackStack() }
             )
 
         }

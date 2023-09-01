@@ -44,7 +44,7 @@ import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
-    override val titleRes = R.string.app_name
+    override val titleRes = R.string.my_workout
 }
 
 /**
@@ -60,10 +60,11 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val homeUiState by viewModel.homeUiState.collectAsState()
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = modifier
+            .fillMaxSize()
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TrackItTopAppBar(
                 title = stringResource(HomeDestination.titleRes),
