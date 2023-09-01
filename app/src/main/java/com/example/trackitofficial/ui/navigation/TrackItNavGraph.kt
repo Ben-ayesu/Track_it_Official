@@ -15,8 +15,6 @@ import com.example.trackitofficial.ui.home.HomeDestination
 import com.example.trackitofficial.ui.home.HomeScreen
 import com.example.trackitofficial.ui.workout.WorkoutDetailsDestination
 import com.example.trackitofficial.ui.workout.WorkoutDetailsScreen
-import com.example.trackitofficial.ui.workout.WorkoutEntryDestination
-import com.example.trackitofficial.ui.workout.WorkoutEntryScreen
 
 /**
  * Provides Navigation graph for the application.
@@ -33,7 +31,7 @@ fun TrackItNavHost(
     ) {
         composable(route = HomeDestination.route) {
             HomeScreen(
-                navigateToItemEntry = { navController.navigate(WorkoutEntryDestination.route) },
+                navigateToCreateWorkoutEntry = { navController.navigate(CreateWorkoutEntryDestination.route) },
                 navigateToItemUpdate = {
                     navController.navigate("${WorkoutDetailsDestination.route}/${it}")
                 }
@@ -42,16 +40,15 @@ fun TrackItNavHost(
         composable(route = CreateWorkoutEntryDestination.route) {
             CreateWorkoutScreen(
                 navigateBack = { navController.popBackStack() },
-                onNavigateUp = { navController.popBackStack() }
-            )
-
-        }
-        composable(route = WorkoutEntryDestination.route) {
-            WorkoutEntryScreen(
-                navigateBack = { navController.popBackStack() },
-                onNavigateUp = { navController.navigateUp() }
+                onNavigateUp = { navController.navigateUp() },
             )
         }
+//        composable(route = WorkoutEntryDestination.route) {
+//            WorkoutEntryScreen(
+//                navigateBack = { navController.popBackStack() },
+//                onNavigateUp = { navController.navigateUp() }
+//            )
+//        }
         composable(
             route = WorkoutDetailsDestination.routeWithArgs,
             arguments = listOf(navArgument(WorkoutDetailsDestination.itemIdArg) {

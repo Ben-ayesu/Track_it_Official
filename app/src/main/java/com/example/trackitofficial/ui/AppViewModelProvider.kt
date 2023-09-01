@@ -9,7 +9,6 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.trackitofficial.TrackItApplication
 import com.example.trackitofficial.ui.create.CreateWorkoutViewModel
 import com.example.trackitofficial.ui.home.HomeViewModel
-import com.example.trackitofficial.ui.workout.TrackEntryItViewModel
 import com.example.trackitofficial.ui.workout.TrackItDetailsViewModel
 import com.example.trackitofficial.ui.workout.TrackItEditViewModel
 
@@ -24,7 +23,7 @@ object AppViewModelProvider {
         }
         initializer {
             CreateWorkoutViewModel(
-                this.createSavedStateHandle(),
+//                this.createSavedStateHandle(),
                 trackItApplication().container.workoutsRepository
             )
         }
@@ -35,10 +34,10 @@ object AppViewModelProvider {
                 trackItApplication().container.workoutsRepository
             )
         }
-        // Initializer for WorkoutEntryViewModel
-        initializer {
-            TrackEntryItViewModel(trackItApplication().container.workoutsRepository)
-        }
+//        // Initializer for WorkoutEntryViewModel
+//        initializer {
+//            TrackEntryItViewModel(trackItApplication().container.workoutsRepository)
+//        }
 
         // Initializer for WorkoutDetailsViewModel
         initializer {

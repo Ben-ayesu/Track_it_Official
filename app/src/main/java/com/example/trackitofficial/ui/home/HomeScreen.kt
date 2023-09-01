@@ -54,7 +54,7 @@ object HomeDestination : NavigationDestination {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
-    navigateToItemEntry: () -> Unit,
+    navigateToCreateWorkoutEntry: () -> Unit,
     navigateToItemUpdate: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
@@ -69,12 +69,13 @@ fun HomeScreen(
             TrackItTopAppBar(
                 title = stringResource(HomeDestination.titleRes),
                 canNavigateBack = false,
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
+                navigateUp = {}
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = navigateToItemEntry,
+                onClick = navigateToCreateWorkoutEntry,
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier
                     .size(100.dp)
@@ -82,7 +83,7 @@ fun HomeScreen(
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.add_note),
-                    contentDescription = stringResource(R.string.workout_rating_title),
+                    contentDescription = stringResource(R.string.add_note),
                     modifier = Modifier
                         .padding(dimensionResource(id = R.dimen.padding_medium))
                 )

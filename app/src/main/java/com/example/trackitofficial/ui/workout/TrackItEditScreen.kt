@@ -13,7 +13,6 @@ import com.example.trackitofficial.ui.AppViewModelProvider
 import com.example.trackitofficial.ui.navigation.NavigationDestination
 import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
 import com.example.trackitofficial.ui.workout.TrackItEditViewModel
-import com.example.trackitofficial.ui.workout.WorkoutEntryBody
 import kotlinx.coroutines.launch
 
 object WorkoutEditDestination : NavigationDestination {
@@ -42,7 +41,7 @@ fun TrackItEditScreen(
         },
         modifier = modifier
     ) { innerPadding ->
-        WorkoutEntryBody(
+        CreateWorkoutBody(
             workoutUiState = viewModel.workoutUiState,
             onItemValueChange = viewModel::updateUiState,
             onSaveClick = {

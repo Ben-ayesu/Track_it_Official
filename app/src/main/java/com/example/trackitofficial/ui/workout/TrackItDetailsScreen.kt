@@ -36,6 +36,8 @@ import com.example.trackitofficial.R
 import com.example.trackitofficial.TrackItTopAppBar
 import com.example.trackitofficial.data.db.entities.Workout
 import com.example.trackitofficial.ui.AppViewModelProvider
+import com.example.trackitofficial.ui.create.WorkoutDetails
+import com.example.trackitofficial.ui.create.toWorkout
 import com.example.trackitofficial.ui.navigation.NavigationDestination
 import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
 import kotlinx.coroutines.launch

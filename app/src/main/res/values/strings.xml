@@ -10,14 +10,15 @@
     <string name="edit_workout_title">Edit Workout</string>
     <string name="workout">Workout</string>
     <string name="workout_detail_title">Workout Details</string>
-    <string name="workout_rating_title">Workout 1 – 5</string>
-    <string name="workout_name_req">Workout Date</string>
+    <string name="workout_rating_title">Describe how you felt?</string>
+    <string name="create_workout_title_label">Workout Title</string>
     <string name="edit_entry_title">Add Workout</string>
-    <string name="workout_price_req">Workout Description and times</string>
+    <string name="create_workout_description_label">Workout Description</string>
     <string name="no">No</string>
     <string name="save_action">Save</string>
     <string name="yes">Yes</string>
     <string name="required_fields">*required fields</string>
     <string name="date">Date</string>
     <string name="done">done</string>
+    <string name="add_note">add note</string>
 </resources>
