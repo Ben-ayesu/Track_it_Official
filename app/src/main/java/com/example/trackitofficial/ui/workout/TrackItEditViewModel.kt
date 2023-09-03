@@ -51,12 +51,22 @@ class TrackItEditViewModel(
     }
 
     /**
+     * Deletes the item from the [workoutRepo]'s data source.
+     */
+    suspend fun deleteWorkout() {
+        workoutRepo.deleteWorkout(workoutUiState.workoutDetails.toWorkout())
+    }
+
+    /**
      * Updates the [workoutUiState] with the value provided in the argument. This method also triggers
      * a validation for input values.
      */
     fun updateUiState(workoutDetails: WorkoutDetails) {
         workoutUiState =
-            WorkoutUiState(workoutDetails = workoutDetails, isEntryValid = validateInput(workoutDetails))
+            WorkoutUiState(
+                workoutDetails = workoutDetails,
+                isEntryValid = validateInput(workoutDetails)
+            )
     }
 
     private fun validateInput(uiState: WorkoutDetails = workoutUiState.workoutDetails): Boolean {

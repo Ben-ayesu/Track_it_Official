@@ -13,8 +13,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.trackitofficial.ui.home.HomeDestination
 import com.example.trackitofficial.ui.home.HomeScreen
-import com.example.trackitofficial.ui.workout.WorkoutDetailsDestination
-import com.example.trackitofficial.ui.workout.WorkoutDetailsScreen
 
 /**
  * Provides Navigation graph for the application.
@@ -31,9 +29,13 @@ fun TrackItNavHost(
     ) {
         composable(route = HomeDestination.route) {
             HomeScreen(
-                navigateToCreateWorkoutEntry = { navController.navigate(CreateWorkoutEntryDestination.route) },
+                navigateToCreateWorkoutEntry = {
+                    navController.navigate(
+                        CreateWorkoutEntryDestination.route
+                    )
+                },
                 navigateToItemUpdate = {
-                    navController.navigate("${WorkoutDetailsDestination.route}/${it}")
+                    navController.navigate("${WorkoutEditDestination.route}/$it")
                 }
             )
         }
@@ -41,23 +43,6 @@ fun TrackItNavHost(
             CreateWorkoutScreen(
                 navigateBack = { navController.popBackStack() },
                 onNavigateUp = { navController.navigateUp() },
-            )
-        }
-//        composable(route = WorkoutEntryDestination.route) {
-//            WorkoutEntryScreen(
-//                navigateBack = { navController.popBackStack() },
-//                onNavigateUp = { navController.navigateUp() }
-//            )
-//        }
-        composable(
-            route = WorkoutDetailsDestination.routeWithArgs,
-            arguments = listOf(navArgument(WorkoutDetailsDestination.itemIdArg) {
-                type = NavType.IntType
-            })
-        ) {
-            WorkoutDetailsScreen(
-                navigateToEditItem = { navController.navigate("${WorkoutEditDestination.route}/$it") },
-                navigateBack = { navController.navigateUp() }
             )
         }
         composable(

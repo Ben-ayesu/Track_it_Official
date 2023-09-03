@@ -57,11 +57,11 @@ object CreateWorkoutEntryDestination : NavigationDestination {
 fun CreateWorkoutScreen(
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
+//    workout: Workout? = null,
     canNavigateBack: Boolean = true,
     viewModel: CreateWorkoutViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val coroutineScope = rememberCoroutineScope()
-
     Scaffold(
         topBar = {
             TrackItTopAppBar(

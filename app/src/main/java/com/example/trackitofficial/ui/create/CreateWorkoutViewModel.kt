@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.trackitofficial.data.db.entities.Workout
 import com.example.trackitofficial.data.db.repo.WorkoutRepo
-import com.example.trackitofficial.ui.workout.WorkoutDetails
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -14,13 +13,20 @@ import java.util.Locale
 
 class CreateWorkoutViewModel(
 //    savedStateHandle: SavedStateHandle,
-    private val workoutRepo: WorkoutRepo
+    private val workoutRepo: WorkoutRepo,
+    existingWorkout: Workout? = null
 ) : ViewModel() {
     /**
      * Holds current item ui state
      */
-    var workoutUiState by mutableStateOf(WorkoutUiState())
-        private set
+//    var workoutUiState by mutableStateOf(WorkoutUiState())
+//        private set
+
+    // Initialize ViewModel state based on whether an existing workout is provided
+    var workoutUiState by mutableStateOf(
+        existingWorkout?.toWorkoutUiState(true) ?: WorkoutUiState()
+    )
+
 
     // Handle the formatting of date in ui layer
     val sdf = SimpleDateFormat("MMMM d, yyyy", Locale.US)
@@ -69,7 +75,11 @@ class CreateWorkoutViewModel(
 
     suspend fun saveWorkout() {
         if (validateInput()) {
-            workoutRepo.insertWorkout(workoutUiState.workoutDetails.toWorkout())
+            if (workoutUiState.workoutDetails.toWorkout().workoutId == 0) {
+                workoutRepo.insertWorkout(workoutUiState.workoutDetails.toWorkout())
+            } else {
+                workoutRepo.updateWorkout(workoutUiState.workoutDetails.toWorkout())
+            }
         }
     }
 
@@ -115,13 +125,6 @@ data class WorkoutDetails(
     val rating: String = "",
     var date: String = "",
     var time: String = ""
-)
-
-/**
- * UI state for WorkoutDetailsScreen
- */
-data class WorkoutDetailsUiState(
-    val workoutDetails: WorkoutDetails = WorkoutDetails()
 )
 
 /**
