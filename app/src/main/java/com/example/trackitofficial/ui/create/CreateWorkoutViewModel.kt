@@ -18,9 +18,7 @@ class CreateWorkoutViewModel(
      */
     var workoutUiState by mutableStateOf(WorkoutUiState())
         private set
-
 //    private val itemId: Int = checkNotNull(savedStateHandle[WorkoutDetailsDestination.itemIdArg])
-
 //    private val itemId: Int = savedStateHandle.get<Int>(WorkoutDetailsDestination.itemIdArg) ?: 0
 
     /**

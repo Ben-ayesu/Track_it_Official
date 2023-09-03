@@ -136,7 +136,8 @@ private fun HomeBody(
 @Composable
 private fun WorkoutList(
     workoutList: List<Workout>,
-    onItemClick: (Workout) -> Unit, modifier: Modifier = Modifier
+    onItemClick: (Workout) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier = modifier) {
         items(items = workoutList, key = { it.workoutId }) { workout ->

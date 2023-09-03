@@ -6,7 +6,7 @@
     <string name="delete">Delete</string>
     <string name="delete_question">Are you sure you want to delete?</string>
     <string name="no_workout_description">No workouts saved in the list.\nTap + to add.</string>
-    <string name="new_workout">New Workout</string>
+    <string name="new_workout">New Workout Details</string>
     <string name="edit_workout_title">Edit Workout</string>
     <string name="workout">Workout</string>
     <string name="workout_detail_title">Workout Details</string>
@@ -18,7 +18,7 @@
     <string name="save_action">Save</string>
     <string name="yes">Yes</string>
     <string name="required_fields">*required fields</string>
-    <string name="date">Date</string>
+    <string name="formatted_date">"%s"</string>
     <string name="done">done</string>
     <string name="add_note">add note</string>
 </resources>

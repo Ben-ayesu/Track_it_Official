@@ -3,12 +3,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -19,14 +21,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -44,10 +46,13 @@ import com.example.trackitofficial.ui.create.WorkoutUiState
 import com.example.trackitofficial.ui.navigation.NavigationDestination
 import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 object CreateWorkoutEntryDestination : NavigationDestination {
     override val route = "create_workout_entry"
-    override val titleRes = R.string.date
+    override val titleRes = R.string.new_workout
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,11 +63,14 @@ fun CreateWorkoutScreen(
     canNavigateBack: Boolean = true,
     viewModel: CreateWorkoutViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val couroutineScope = rememberCoroutineScope()
+    val coroutineScope = rememberCoroutineScope()
+    val sdf = SimpleDateFormat("MMMM d, yyyy", Locale.US)
+    val formattedDate = sdf.format(Date())
+
     Scaffold(
         topBar = {
             TrackItTopAppBar(
-                title = stringResource(id = CreateWorkoutEntryDestination.titleRes),
+                title = formattedDate,
                 canNavigateBack = canNavigateBack,
                 navigateUp = onNavigateUp,
             )
@@ -72,7 +80,7 @@ fun CreateWorkoutScreen(
             workoutUiState = viewModel.workoutUiState,
             onItemValueChange = viewModel::updateUiState,
             onSaveClick = {
-                couroutineScope.launch {
+                coroutineScope.launch {
                     viewModel.saveWorkout()
                     navigateBack()
                 }
@@ -119,11 +127,12 @@ fun CreateWorkoutInputForm(
     onValueChange: (WorkoutDetails) -> Unit = {},
     enabled: Boolean = true
 ) {
+    val focus = LocalFocusManager.current
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
-        TextField(
+        OutlinedTextField(
             value = workoutDetails.title,
             onValueChange = { onValueChange(workoutDetails.copy(title = it)) },
             label = { Text(stringResource(R.string.create_workout_title_label)) },
@@ -131,10 +140,8 @@ fun CreateWorkoutInputForm(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
             ),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            keyboardActions = KeyboardActions(
+                onNext = { focus.moveFocus(FocusDirection.Down) }
             ),
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
@@ -147,26 +154,20 @@ fun CreateWorkoutInputForm(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
             ),
-            label = { Text(stringResource(R.string.create_workout_description_label)) },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            keyboardActions = KeyboardActions(
+                onNext = { focus.moveFocus(FocusDirection.Down) }
             ),
-            modifier = Modifier.fillMaxWidth(),
+            label = { Text(stringResource(R.string.create_workout_description_label)) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = 250.dp),
             enabled = enabled,
-            singleLine = true
         )
         OutlinedTextField(
             value = workoutDetails.date,
             onValueChange = { onValueChange(workoutDetails.copy(date = it)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             label = { Text(stringResource(R.string.workout_rating_title)) },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            ),
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
@@ -203,7 +204,6 @@ fun ColorView() {
             .background(colorResource(id = R.color.select_color))
     )
 }
-
 @Preview()
 @Composable
 private fun CreateWorkoutScreenPreview() {
