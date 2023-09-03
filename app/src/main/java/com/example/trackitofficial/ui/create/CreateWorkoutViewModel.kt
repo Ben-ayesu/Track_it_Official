@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModel
 import com.example.trackitofficial.data.db.entities.Workout
 import com.example.trackitofficial.data.db.repo.WorkoutRepo
 import com.example.trackitofficial.ui.workout.WorkoutDetails
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 class CreateWorkoutViewModel(
@@ -18,6 +21,13 @@ class CreateWorkoutViewModel(
      */
     var workoutUiState by mutableStateOf(WorkoutUiState())
         private set
+
+    // Handle the formatting of date in ui layer
+    val sdf = SimpleDateFormat("MMMM d, yyyy", Locale.US)
+    val formattedDate = sdf.format(Date())
+    val sdfTime = SimpleDateFormat("HH:mm", Locale.US)
+    val formattedTime = sdfTime.format(Date())
+
 //    private val itemId: Int = checkNotNull(savedStateHandle[WorkoutDetailsDestination.itemIdArg])
 //    private val itemId: Int = savedStateHandle.get<Int>(WorkoutDetailsDestination.itemIdArg) ?: 0
 
@@ -81,7 +91,7 @@ class CreateWorkoutViewModel(
 
     private fun validateInput(uiState: WorkoutDetails = workoutUiState.workoutDetails): Boolean {
         return with(uiState) {
-            title.isNotBlank() && description.isNotBlank() && date.isNotBlank()
+            title.isNotBlank() && description.isNotBlank() && rating.isNotBlank()
         }
     }
 
@@ -103,7 +113,8 @@ data class WorkoutDetails(
     val title: String = "",
     val description: String = "",
     val rating: String = "",
-    val date: String = "",
+    var date: String = "",
+    var time: String = ""
 )
 
 /**
@@ -123,7 +134,8 @@ fun WorkoutDetails.toWorkout(): Workout = Workout(
     workoutTitle = title,
     workoutDescription = description,
     workoutRating = rating,
-    workoutDate = date
+    workoutDate = date,
+    workoutTime = time
 )
 
 /**
@@ -143,5 +155,6 @@ fun Workout.toWorkoutDetails(): WorkoutDetails = WorkoutDetails(
     title = workoutTitle,
     description = workoutDescription,
     rating = workoutRating,
-    date = workoutDate
+    date = workoutDate,
+    time = workoutTime
 )

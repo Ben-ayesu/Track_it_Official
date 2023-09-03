@@ -92,7 +92,7 @@ fun HomeScreen(
     ) { innerPadding ->
         HomeBody(
             workoutList = homeUiState.workoutList,
-            onItemClick = navigateToItemUpdate,
+            onItemClick = { navigateToItemUpdate(it) },
             modifier = modifier
                 .padding(innerPadding)
                 .fillMaxSize()
@@ -182,7 +182,7 @@ private fun Workout(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = workout.workoutDate,
+                        text = "${workout.workoutDate} - ${workout.workoutTime}",
                         style = MaterialTheme.typography.labelSmall,
                         textAlign = TextAlign.Center
                     )
@@ -198,7 +198,9 @@ private fun Workout(
 fun HomeBodyPreview() {
     TrackItOfficialTheme {
         HomeBody(listOf(
-            Workout(0,"Sprints", "Game", "April", "Good"), Workout(1,"Sprints", "Game", "April", "Good"), Workout(2,"Sprints", "Game", "April", "Good")
+            Workout(0, "Sprints", "Game", "April", "Good", "12:00"),
+            Workout(1, "Sprints", "Game", "April", "Good", "12:00"),
+            Workout(2, "Sprints", "Game", "April", "Good", "12:00")
         ), onItemClick = {})
     }
 }
@@ -216,7 +218,7 @@ fun HomeBodyEmptyListPreview() {
 fun InventoryItemPreview() {
     TrackItOfficialTheme {
         Workout(
-            Workout(0,"Sprints", "Game", "April", "Good")
+            Workout(0, "Sprints", "Game", "April", "Good", "12:00")
         )
     }
 }

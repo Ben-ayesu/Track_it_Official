@@ -46,9 +46,6 @@ import com.example.trackitofficial.ui.create.WorkoutUiState
 import com.example.trackitofficial.ui.navigation.NavigationDestination
 import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 object CreateWorkoutEntryDestination : NavigationDestination {
     override val route = "create_workout_entry"
@@ -64,13 +61,11 @@ fun CreateWorkoutScreen(
     viewModel: CreateWorkoutViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val sdf = SimpleDateFormat("MMMM d, yyyy", Locale.US)
-    val formattedDate = sdf.format(Date())
 
     Scaffold(
         topBar = {
             TrackItTopAppBar(
-                title = formattedDate,
+                title = viewModel.formattedDate,
                 canNavigateBack = canNavigateBack,
                 navigateUp = onNavigateUp,
             )
@@ -81,6 +76,8 @@ fun CreateWorkoutScreen(
             onItemValueChange = viewModel::updateUiState,
             onSaveClick = {
                 coroutineScope.launch {
+                    viewModel.workoutUiState.workoutDetails.date = viewModel.formattedDate
+                    viewModel.workoutUiState.workoutDetails.time = viewModel.formattedTime
                     viewModel.saveWorkout()
                     navigateBack()
                 }
@@ -128,6 +125,7 @@ fun CreateWorkoutInputForm(
     enabled: Boolean = true
 ) {
     val focus = LocalFocusManager.current
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
@@ -164,8 +162,8 @@ fun CreateWorkoutInputForm(
             enabled = enabled,
         )
         OutlinedTextField(
-            value = workoutDetails.date,
-            onValueChange = { onValueChange(workoutDetails.copy(date = it)) },
+            value = workoutDetails.rating,
+            onValueChange = { onValueChange(workoutDetails.copy(rating = it)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             label = { Text(stringResource(R.string.workout_rating_title)) },
             modifier = Modifier.fillMaxWidth(),
@@ -182,11 +180,7 @@ fun CreateWorkoutInputForm(
             modifier = Modifier,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            IconButton(
-                onClick = {
-
-                },
-            ) {
+            IconButton(onClick = {}) {
                 Icon(imageVector = Icons.Default.Info, contentDescription = "Info")
             }
             Text(text = "Tap check in the top right to save workout")

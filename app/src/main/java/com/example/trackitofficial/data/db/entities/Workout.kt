@@ -14,4 +14,5 @@ data class Workout(
     val workoutDescription: String,
     val workoutRating: String,
     val workoutDate: String,
+    val workoutTime: String
 )
