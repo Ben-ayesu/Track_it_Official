@@ -27,6 +27,7 @@ fun TrackitApp(navController: NavHostController = rememberNavController()) {
     TrackItNavHost(navController = navController)
 }
 
+
 /**
  * App bar to display title and conditionally display the back navigation.
  */
@@ -49,19 +50,6 @@ fun TrackItTopAppBar(
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
                         contentDescription = stringResource(R.string.back_button)
-                    )
-                }
-            }
-        },
-        actions = {
-            if (canNavigateBack) {
-                IconButton(
-                    onClick = { },
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.AddCircle,
-                        contentDescription = stringResource(R.string.done),
-                        tint = Color.White
                     )
                 }
             }
