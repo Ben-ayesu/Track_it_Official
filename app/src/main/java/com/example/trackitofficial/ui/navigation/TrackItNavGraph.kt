@@ -47,9 +47,7 @@ fun TrackItNavHost(
         }
         composable(
             route = WorkoutEditDestination.routeWithArgs,
-            arguments = listOf(navArgument(WorkoutEditDestination.itemIdArg) {
-                type = NavType.IntType
-            })
+            arguments = listOf( navArgument(WorkoutEditDestination.itemIdArg) { type = NavType.IntType } )
         ) {
             TrackItEditScreen(
                 navigateBack = { navController.popBackStack() },
