@@ -19,9 +19,6 @@ class CreateWorkoutViewModel(
     /**
      * Holds current item ui state
      */
-//    var workoutUiState by mutableStateOf(WorkoutUiState())
-//        private set
-
     // Initialize ViewModel state based on whether an existing workout is provided
     var workoutUiState by mutableStateOf(
         existingWorkout?.toWorkoutUiState(true) ?: WorkoutUiState()
