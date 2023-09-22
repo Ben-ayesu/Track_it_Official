@@ -162,19 +162,19 @@ private fun Workout(
             modifier.fillMaxWidth()
         ) {
             Column(
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small)),
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
             ) {
                 Text(
                     text = workout.workoutTitle,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleSmall,
                     maxLines = 1,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
                     text = workout.workoutDescription,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.bodySmall,
                     maxLines = 5
                 )
                 Row(
@@ -182,7 +182,11 @@ private fun Workout(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "${workout.workoutDate} - ${workout.workoutTime}",
+                        text = stringResource(
+                            R.string.created_on,
+                            workout.workoutDate,
+                            workout.workoutTime
+                        ),
                         style = MaterialTheme.typography.labelSmall,
                         textAlign = TextAlign.Center
                     )

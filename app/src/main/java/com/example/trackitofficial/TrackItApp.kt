@@ -25,6 +25,7 @@ fun TrackitApp(navController: NavHostController = rememberNavController()) {
     TrackItNavHost(navController = navController)
 }
 
+
 /**
  * App bar to display title and conditionally display the back navigation.
  */
