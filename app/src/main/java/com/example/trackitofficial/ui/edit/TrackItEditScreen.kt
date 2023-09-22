@@ -25,9 +25,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trackitofficial.R
 import com.example.trackitofficial.TrackItTopAppBar
 import com.example.trackitofficial.ui.AppViewModelProvider
+import com.example.trackitofficial.ui.edit.TrackItEditViewModel
 import com.example.trackitofficial.ui.navigation.NavigationDestination
 import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
-import com.example.trackitofficial.ui.workout.TrackItEditViewModel
 import kotlinx.coroutines.launch
 
 object WorkoutEditDestination : NavigationDestination {
