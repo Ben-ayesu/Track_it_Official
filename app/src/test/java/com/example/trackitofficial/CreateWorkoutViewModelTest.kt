@@ -4,6 +4,7 @@ import com.example.trackitofficial.data.db.repo.WorkoutRepo
 import com.example.trackitofficial.ui.create.CreateWorkoutViewModel
 import com.example.trackitofficial.ui.create.WorkoutDetails
 import com.example.trackitofficial.ui.create.toWorkout
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -46,7 +47,7 @@ class CreateWorkoutViewModelTest {
     }
 
     @Test
-    fun `test saveWorkout calls insertWorkout when workout is new`() {
+    fun `test saveWorkout calls insertWorkout when workout is new`() = runTest {
         MockitoAnnotations.initMocks(this)
         val workoutDetails = WorkoutDetails(
             title = "Bench Press",
@@ -59,7 +60,7 @@ class CreateWorkoutViewModelTest {
     }
 
     @Test
-    fun `test saveWorkout calls updateWorkout when workout is not new`() {
+    fun `test saveWorkout calls updateWorkout when workout is not new`() = runTest {
         MockitoAnnotations.initMocks(this)
         val workoutDetails = WorkoutDetails(
             id = 1,
