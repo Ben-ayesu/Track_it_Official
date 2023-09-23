@@ -3,10 +3,12 @@ package com.example.trackitofficial
 import com.example.trackitofficial.data.db.repo.WorkoutRepo
 import com.example.trackitofficial.ui.create.CreateWorkoutViewModel
 import com.example.trackitofficial.ui.create.WorkoutDetails
+import com.example.trackitofficial.ui.create.toWorkout
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -15,7 +17,6 @@ class CreateWorkoutViewModelTest {
 
     @Mock
     private lateinit var workoutRepo: WorkoutRepo
-
     private lateinit var createWorkoutViewModel: CreateWorkoutViewModel
 
     @Test
@@ -42,5 +43,32 @@ class CreateWorkoutViewModelTest {
         createWorkoutViewModel = CreateWorkoutViewModel(workoutRepo)
         createWorkoutViewModel.updateUiState(workoutDetails)
         assertFalse(createWorkoutViewModel.workoutUiState.isEntryValid)
+    }
+
+    @Test
+    fun `test saveWorkout calls insertWorkout when workout is new`() {
+        MockitoAnnotations.initMocks(this)
+        val workoutDetails = WorkoutDetails(
+            title = "Bench Press",
+            description = "A chest workout",
+            rating = "5"
+        )
+        createWorkoutViewModel = CreateWorkoutViewModel(workoutRepo)
+        createWorkoutViewModel.saveWorkout()
+        Mockito.verify(workoutRepo).insertWorkout(workoutDetails.toWorkout())
+    }
+
+    @Test
+    fun `test saveWorkout calls updateWorkout when workout is not new`() {
+        MockitoAnnotations.initMocks(this)
+        val workoutDetails = WorkoutDetails(
+            id = 1,
+            title = "Bench Press",
+            description = "A chest workout",
+            rating = "5"
+        )
+        createWorkoutViewModel = CreateWorkoutViewModel(workoutRepo)
+        createWorkoutViewModel.saveWorkout()
+        Mockito.verify(workoutRepo).updateWorkout(workoutDetails.toWorkout())
     }
 }
