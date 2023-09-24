@@ -22,7 +22,7 @@ object AppViewModelProvider {
         }
         initializer {
             CreateWorkoutViewModel(
-//                this.createSavedStateHandle(),
+                this.createSavedStateHandle(),
                 trackItApplication().container.workoutsRepository
             )
         }
