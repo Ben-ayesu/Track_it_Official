@@ -3,6 +3,7 @@ package com.example.trackitofficial.ui.create
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.trackitofficial.data.db.entities.Workout
 import com.example.trackitofficial.data.db.repo.WorkoutRepo
@@ -12,7 +13,7 @@ import java.util.Locale
 
 
 class CreateWorkoutViewModel(
-//    savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val workoutRepo: WorkoutRepo,
     existingWorkout: Workout? = null
 ) : ViewModel() {

@@ -1,4 +1,4 @@
-package com.example.trackitofficial.ui.workout
+package com.example.trackitofficial.ui.edit
 
 import WorkoutEditDestination
 import androidx.compose.runtime.getValue

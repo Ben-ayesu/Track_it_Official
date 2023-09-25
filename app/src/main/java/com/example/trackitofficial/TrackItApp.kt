@@ -3,7 +3,6 @@ package com.example.trackitofficial
 import android.annotation.SuppressLint
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -12,10 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.trackitofficial.ui.home.HomeDestination
 import com.example.trackitofficial.ui.navigation.TrackItNavHost
 
 /**
@@ -24,7 +23,10 @@ import com.example.trackitofficial.ui.navigation.TrackItNavHost
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun TrackitApp(navController: NavHostController = rememberNavController()) {
-    TrackItNavHost(navController = navController)
+    TrackItNavHost(
+        navController = navController,
+        startDestination = HomeDestination.route
+    )
 }
 
 
