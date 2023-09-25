@@ -3,61 +3,29 @@ package com.example.trackitofficial.ui.create
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.trackitofficial.data.db.entities.Workout
 import com.example.trackitofficial.data.db.repo.WorkoutRepo
+import com.example.trackitofficial.utils.UtilFunctions.Companion.getFormattedDate
+import com.example.trackitofficial.utils.UtilFunctions.Companion.getFormattedTime
+import com.example.trackitofficial.utils.UtilFunctions.Companion.parseDate
+import com.example.trackitofficial.utils.UtilFunctions.Companion.parseTime
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 
-class CreateWorkoutViewModel(
-    savedStateHandle: SavedStateHandle,
-    private val workoutRepo: WorkoutRepo,
-    existingWorkout: Workout? = null
-) : ViewModel() {
+class CreateWorkoutViewModel(private val workoutRepo: WorkoutRepo) : ViewModel() {
     /**
      * Holds current item ui state
      */
-    // Initialize ViewModel state based on whether an existing workout is provided
-    var workoutUiState by mutableStateOf(
-        existingWorkout?.toWorkoutUiState(true) ?: WorkoutUiState()
-    )
-
+    var workoutUiState by mutableStateOf(WorkoutUiState())
 
     // Handle the formatting of date in ui layer
     val sdf = SimpleDateFormat("MMMM d, yyyy", Locale.US)
     val formattedDate = sdf.format(Date())
     val sdfTime = SimpleDateFormat("HH:mm", Locale.US)
     val formattedTime = sdfTime.format(Date())
-
-//    private val itemId: Int = checkNotNull(savedStateHandle[WorkoutDetailsDestination.itemIdArg])
-//    private val itemId: Int = savedStateHandle.get<Int>(WorkoutDetailsDestination.itemIdArg) ?: 0
-
-    /**
-     * Holds the item details ui state. The data is retrieved from [workoutRepo] and mapped to
-     * the UI state.
-     */
-//    val uiState: StateFlow<WorkoutDetailsUiState> =
-//        workoutRepo.getWorkout(itemId)
-//            .filterNotNull()
-//            .map {
-//                WorkoutDetailsUiState(workoutDetails = it.toWorkoutDetails())
-//            }.stateIn(
-//                scope = viewModelScope,
-//                started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
-//                initialValue = WorkoutDetailsUiState()
-//            )
-
-//    init {
-//        viewModelScope.launch {
-//            workoutUiState = workoutRepo.getWorkout(itemId)
-//                .filterNotNull()
-//                .first()
-//                .toWorkoutUiState(true)
-//        }
-//    }
 
     /**
      * Updates the [workoutUiState] with the value provided in the argument. This method also triggers
@@ -80,22 +48,6 @@ class CreateWorkoutViewModel(
             }
         }
     }
-
-    /**
-     * Update the workout in the [WorkoutRepo]'s data source
-     */
-//    suspend fun updateWorkout() {
-//        if (validateInput(workoutUiState.workoutDetails)) {
-//            workoutRepo.updateWorkout(workoutUiState.workoutDetails.toWorkout())
-//        }
-//    }
-
-    /**
-     * Deletes the item from the [workoutRepo]'s data source.
-     */
-//    suspend fun deleteItem() {
-//        workoutRepo.deleteWorkout(uiState.value.workoutDetails.toWorkout())
-//    }
 
     private fun validateInput(uiState: WorkoutDetails = workoutUiState.workoutDetails): Boolean {
         return with(uiState) {
@@ -126,17 +78,15 @@ data class WorkoutDetails(
 )
 
 /**
- * Extension function to convert [WorkoutDetails] to [Workout]. If the value of [WorkoutDetails.description] is
- * not a valid [Double], then the price will be set to 0.0. Similarly if the value of
- * [WorkoutDetails.date] is not a valid [Int], then the quantity will be set to 0
+ * Extension function to convert [WorkoutDetails] to [Workout]
  */
 fun WorkoutDetails.toWorkout(): Workout = Workout(
     workoutId = id,
     workoutTitle = title,
     workoutDescription = description,
     workoutRating = rating,
-    workoutDate = date,
-    workoutTime = time
+    workoutDate = parseDate(date),
+    workoutTime = parseTime(time)
 )
 
 /**
@@ -151,11 +101,16 @@ fun Workout.toWorkoutUiState(isEntryValid: Boolean = false): WorkoutUiState = Wo
 /**
  * Extension function to convert [Workout] to [WorkoutDetails]
  */
-fun Workout.toWorkoutDetails(): WorkoutDetails = WorkoutDetails(
-    id = workoutId,
-    title = workoutTitle,
-    description = workoutDescription,
-    rating = workoutRating,
-    date = workoutDate,
-    time = workoutTime
-)
+fun Workout.toWorkoutDetails(): WorkoutDetails {
+    val formattedDate = getFormattedDate(workoutDate)
+    val formattedTime = getFormattedTime(workoutTime)
+
+    return WorkoutDetails(
+        id = workoutId,
+        title = workoutTitle,
+        description = workoutDescription,
+        rating = workoutRating,
+        date = formattedDate,
+        time = formattedTime
+    )
+}

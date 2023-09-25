@@ -12,7 +12,7 @@ import com.example.trackitofficial.ui.edit.TrackItEditViewModel
 import com.example.trackitofficial.ui.home.HomeViewModel
 
 /**
- * Provides Factory to create instance of ViewModel for the entire Inventory app
+ * Provides Factory to create instance of ViewModel for the entire the app
  */
 object AppViewModelProvider {
     val Factory = viewModelFactory {
@@ -21,10 +21,7 @@ object AppViewModelProvider {
             HomeViewModel(trackItApplication().container.workoutsRepository)
         }
         initializer {
-            CreateWorkoutViewModel(
-                this.createSavedStateHandle(),
-                trackItApplication().container.workoutsRepository
-            )
+            CreateWorkoutViewModel(trackItApplication().container.workoutsRepository)
         }
         // Initializer for WorkoutEditViewModel
         initializer {

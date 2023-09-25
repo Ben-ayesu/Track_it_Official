@@ -31,5 +31,4 @@ interface WorkoutRepo {
      * Update workout in the data source
      */
     suspend fun updateWorkout(workout: Workout)
-
 }

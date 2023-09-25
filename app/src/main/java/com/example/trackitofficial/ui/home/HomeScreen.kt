@@ -41,6 +41,8 @@ import com.example.trackitofficial.data.db.entities.Workout
 import com.example.trackitofficial.ui.AppViewModelProvider
 import com.example.trackitofficial.ui.navigation.NavigationDestination
 import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
+import com.example.trackitofficial.utils.UtilFunctions
+import java.util.Date
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
@@ -184,8 +186,8 @@ private fun Workout(
                     Text(
                         text = stringResource(
                             R.string.created_on,
-                            workout.workoutDate,
-                            workout.workoutTime
+                            UtilFunctions.getFormattedDate(workout.workoutDate),
+                            UtilFunctions.getFormattedTime(workout.workoutTime)
                         ),
                         style = MaterialTheme.typography.labelSmall,
                         textAlign = TextAlign.Center
@@ -202,9 +204,9 @@ private fun Workout(
 fun HomeBodyPreview() {
     TrackItOfficialTheme {
         HomeBody(listOf(
-            Workout(0, "Sprints", "Game", "April", "Good", "12:00"),
-            Workout(1, "Sprints", "Game", "April", "Good", "12:00"),
-            Workout(2, "Sprints", "Game", "April", "Good", "12:00")
+            Workout(0, "Sprints", "Game", "April", Date(), Date()),
+            Workout(1, "Sprints", "Game", "April", Date(), Date()),
+            Workout(2, "Sprints", "Game", "April", Date(), Date())
         ), onItemClick = {})
     }
 }
@@ -222,7 +224,7 @@ fun HomeBodyEmptyListPreview() {
 fun InventoryItemPreview() {
     TrackItOfficialTheme {
         Workout(
-            Workout(0, "Sprints", "Game", "April", "Good", "12:00")
+            Workout(0, "Sprints", "Game", "April", Date(), Date())
         )
     }
 }
