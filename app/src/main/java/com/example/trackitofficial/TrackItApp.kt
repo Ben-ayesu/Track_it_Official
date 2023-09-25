@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.trackitofficial.ui.home.HomeDestination
 import com.example.trackitofficial.ui.navigation.TrackItNavHost
 
 /**
@@ -22,7 +23,10 @@ import com.example.trackitofficial.ui.navigation.TrackItNavHost
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun TrackitApp(navController: NavHostController = rememberNavController()) {
-    TrackItNavHost(navController = navController)
+    TrackItNavHost(
+        navController = navController,
+        startDestination = HomeDestination.route
+    )
 }
 
 

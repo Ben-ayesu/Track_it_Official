@@ -5,7 +5,6 @@ import CreateWorkoutScreen
 import TrackItEditScreen
 import WorkoutEditDestination
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -20,12 +19,11 @@ import com.example.trackitofficial.ui.home.HomeScreen
 @Composable
 fun TrackItNavHost(
     navController: NavHostController,
-    modifier: Modifier = Modifier,
+    startDestination: String
 ) {
     NavHost(
         navController = navController,
-        startDestination = HomeDestination.route,
-        modifier = modifier
+        startDestination = startDestination,
     ) {
         composable(route = HomeDestination.route) {
             HomeScreen(
