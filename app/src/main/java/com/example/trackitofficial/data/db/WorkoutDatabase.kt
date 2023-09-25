@@ -4,13 +4,16 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.trackitofficial.data.db.dao.WorkoutDao
 import com.example.trackitofficial.data.db.entities.Workout
+import com.example.trackitofficial.utils.DateObjectConverter
 
 /**
  * Database class with a singleton Instance object.
  */
 @Database(entities = [Workout::class], version = 1, exportSchema = false)
+@TypeConverters(DateObjectConverter::class)
 abstract class WorkoutDatabase : RoomDatabase() {
     abstract fun workoutDao(): WorkoutDao
 
