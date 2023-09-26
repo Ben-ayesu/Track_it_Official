@@ -12,7 +12,7 @@ import com.example.trackitofficial.utils.DateObjectConverter
 /**
  * Database class with a singleton Instance object.
  */
-@Database(entities = [Workout::class], version = 1, exportSchema = false)
+@Database(entities = [Workout::class], version = 2, exportSchema = false)
 @TypeConverters(DateObjectConverter::class)
 abstract class WorkoutDatabase : RoomDatabase() {
     abstract fun workoutDao(): WorkoutDao
@@ -25,6 +25,7 @@ abstract class WorkoutDatabase : RoomDatabase() {
             // if the Instance is not null, return it, otherwise create a new database instance.
             return Instance ?: synchronized(this) {
                 Room.databaseBuilder(context, WorkoutDatabase::class.java, "workout_database")
+                    .fallbackToDestructiveMigration()
                     .build()
                     .also { Instance = it }
             }

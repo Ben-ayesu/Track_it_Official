@@ -131,7 +131,6 @@ private fun HomeBody(
                     modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
                 )
             }
-
         }
     }
 
@@ -141,7 +140,10 @@ private fun WorkoutList(
     onItemClick: (Workout) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = modifier) {
+    LazyColumn(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
         items(items = workoutList, key = { it.workoutId }) { workout ->
             Workout(
                 workout = workout,
