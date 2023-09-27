@@ -1,6 +1,10 @@
 package com.example.trackitofficial.ui.home
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -24,12 +29,15 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,8 +49,13 @@ import com.example.trackitofficial.data.db.entities.Workout
 import com.example.trackitofficial.ui.AppViewModelProvider
 import com.example.trackitofficial.ui.navigation.NavigationDestination
 import com.example.trackitofficial.ui.theme.TrackItOfficialTheme
+import com.example.trackitofficial.utils.Mood
 import com.example.trackitofficial.utils.UtilFunctions
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Date
+import java.util.Locale
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
@@ -145,7 +158,7 @@ private fun WorkoutList(
         modifier = modifier
     ) {
         items(items = workoutList, key = { it.workoutId }) { workout ->
-            Workout(
+            WorkoutCard(
                 workout = workout,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
@@ -156,7 +169,7 @@ private fun WorkoutList(
 }
 
 @Composable
-private fun Workout(
+private fun WorkoutCard(
     workout: Workout, modifier: Modifier = Modifier
 ) {
     Card(
@@ -201,14 +214,63 @@ private fun Workout(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun WorkoutHeader(
+    moodName: String,
+    time: Instant,
+    workout: Workout,
+    modifier: Modifier
+) {
+    val mood by remember { mutableStateOf(Mood.valueOf(moodName)) }
+    val formatter = remember {
+        DateTimeFormatter.ofPattern("hh:mm a", Locale.getDefault())
+            .withZone(ZoneId.systemDefault())
+    }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(mood.containerColor)
+            .padding(horizontal = 14.dp, vertical = 7.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row {
+            Image(
+                modifier = modifier,
+                painter = painterResource(id = mood.icon),
+                contentDescription = mood.name
+            )
+            Spacer(modifier = Modifier.width(7.dp))
+            Text(
+                text = mood.name,
+                color = mood.contentColor,
+                style = TextStyle(fontSize = MaterialTheme.typography.bodyMedium.fontSize)
+            )
+            Spacer(modifier = Modifier.width(7.dp))
+            Text(
+                text = workout.workoutTitle,
+                color = mood.contentColor,
+                style = TextStyle(fontSize = MaterialTheme.typography.bodyMedium.fontSize)
+            )
+        }
+        Text(
+            text = formatter.format(time),
+            color = mood.contentColor,
+            style = TextStyle(fontSize = MaterialTheme.typography.bodyMedium.fontSize)
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun HomeBodyPreview() {
     TrackItOfficialTheme {
         HomeBody(listOf(
-            Workout(0, "Sprints", "Game", "April", Date(), Date()),
-            Workout(1, "Sprints", "Game", "April", Date(), Date()),
-            Workout(2, "Sprints", "Game", "April", Date(), Date())
+            Workout(0, "Sprints", "Game", "Happy", "April", Date(), Date()),
+            Workout(1, "Sprints", "Game", "Happy", "April", Date(), Date()),
+            Workout(2, "Sprints", "Game", "Happy", "April", Date(), Date())
         ), onItemClick = {})
     }
 }
@@ -225,8 +287,8 @@ fun HomeBodyEmptyListPreview() {
 @Composable
 fun InventoryItemPreview() {
     TrackItOfficialTheme {
-        Workout(
-            Workout(0, "Sprints", "Game", "April", Date(), Date())
+        WorkoutCard(
+            Workout(0, "Sprints", "Game", "April", "Happy", Date(), Date())
         )
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.trackitofficial.data.db.entities.Workout
 import com.example.trackitofficial.data.db.repo.WorkoutRepo
+import com.example.trackitofficial.utils.Mood
 import com.example.trackitofficial.utils.UtilFunctions.Companion.getFormattedDate
 import com.example.trackitofficial.utils.UtilFunctions.Companion.getFormattedTime
 import com.example.trackitofficial.utils.UtilFunctions.Companion.parseDate
@@ -20,6 +21,7 @@ class CreateWorkoutViewModel(private val workoutRepo: WorkoutRepo) : ViewModel()
      * Holds current item ui state
      */
     var workoutUiState by mutableStateOf(WorkoutUiState())
+
 
     // Handle the formatting of date in ui layer
     val sdf = SimpleDateFormat("MMMM d, yyyy", Locale.US)
@@ -72,6 +74,7 @@ data class WorkoutDetails(
     val id: Int = 0,
     val title: String = "",
     val description: String = "",
+    val mood: String = Mood.Neutral.name,
     val rating: String = "",
     var date: String = "",
     var time: String = ""
@@ -84,6 +87,7 @@ fun WorkoutDetails.toWorkout(): Workout = Workout(
     workoutId = id,
     workoutTitle = title,
     workoutDescription = description,
+    workoutMood = mood,
     workoutRating = rating,
     workoutDate = parseDate(date),
     workoutTime = parseTime(time)
@@ -109,6 +113,7 @@ fun Workout.toWorkoutDetails(): WorkoutDetails {
         id = workoutId,
         title = workoutTitle,
         description = workoutDescription,
+        mood = workoutMood,
         rating = workoutRating,
         date = formattedDate,
         time = formattedTime
