@@ -80,7 +80,6 @@ dependencies {
     testImplementation("org.mockito:mockito-junit-jupiter:3.12.4")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 
-
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.6.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")

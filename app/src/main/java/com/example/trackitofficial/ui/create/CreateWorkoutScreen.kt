@@ -170,16 +170,6 @@ fun CreateWorkoutInputForm(
     }
 }
 
-//@Composable
-//fun ColorView() {
-//    Box(
-//        modifier = Modifier
-//            .width(5.dp)
-//            .fillMaxHeight()
-//            .padding(start = 10.dp)
-//            .background(colorResource(id = R.color.select_color))
-//    )
-//}
 @Preview
 @Composable
 private fun CreateWorkoutScreenPreview() {
